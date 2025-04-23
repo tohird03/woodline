@@ -2,6 +2,7 @@ import {AxiosResponse} from 'axios';
 import {Endpoints, umsStages} from '../endpoints';
 import {INetworkConfig, Instance} from '../instance';
 import {ILoginForm, ILoginResponse} from './types';
+import { IResponse } from '../types';
 
 const config: INetworkConfig = {
   baseURL: Endpoints.Base,
@@ -13,7 +14,7 @@ class AuthApi extends Instance {
     super(config);
   }
 
-  getSignIn = (params: ILoginForm): Promise<AxiosResponse<ILoginResponse>> =>
+  getSignIn = (params: ILoginForm): Promise<IResponse<ILoginResponse>> =>
     this.post(Endpoints.SignIn, params);
 
   getUserProfile = (): Promise<any> =>

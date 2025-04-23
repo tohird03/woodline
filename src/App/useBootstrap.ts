@@ -10,16 +10,17 @@ export const useBootstrap = () => {
   const [isInitiated, setIsInitiated] = useState(true);
   const [accessToken] = useLocalStorage<TokenType['accessToken']>('accessToken', '');
 
-  const getProfile = async () => {
-    authStore.getProfile();
-  };
+  // const getProfile = async () => {
+  //   authStore.getProfile();
+  // };
 
   const setToken = async () => {
     if (accessToken) {
       authStore.setIsAuth(true);
       await authStore.setToken({accessToken});
 
-      await getProfile();
+      authStore.setMainMenuItems(mainMenuList);
+      // await getProfile();
 
     }
   };

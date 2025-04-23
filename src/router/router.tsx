@@ -5,7 +5,8 @@ import {Loading} from '@/components';
 import {ROUTES} from '@/constants';
 import {Layout} from '@/modules/Layout';
 import {
-  Login,
+  FurnutureType,
+  Login, Model, Partnor, Staffs,
 } from './lazy';
 import {ProtectedRoutes} from './ProtectedRoutes';
 import {PublicRoutes} from './PublicRoutes';
@@ -23,6 +24,22 @@ export const Router = ({isAuth}: Props) => useRoutes([
         path: ROUTES.home,
         element: <Layout />,
         children: [
+          {
+            element: <Suspense fallback={<Loading />}><Staffs /></Suspense>,
+            path: ROUTES.staffs,
+          },
+          {
+            element: <Suspense fallback={<Loading />}><Partnor /></Suspense>,
+            path: ROUTES.partnor,
+          },
+          {
+            element: <Suspense fallback={<Loading />}><Model /></Suspense>,
+            path: ROUTES.model,
+          },
+          {
+            element: <Suspense fallback={<Loading />}><FurnutureType /></Suspense>,
+            path: ROUTES.furnutureType,
+          },
           // SETTING ROUTES
           {
             element: <Navigate to={ROUTES.home} />,

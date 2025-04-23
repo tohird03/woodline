@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  AlignLeftOutlined,
   AppstoreAddOutlined,
   CodeSandboxOutlined,
   ContactsOutlined,
@@ -9,7 +10,10 @@ import {
   SettingOutlined,
   ShoppingCartOutlined,
   SolutionOutlined,
+  TableOutlined,
   TeamOutlined,
+  UserOutlined,
+  UserSwitchOutlined,
   UsergroupAddOutlined,
 } from '@ant-design/icons';
 import {ROUTES} from '@/constants';
@@ -65,15 +69,23 @@ export const appRoles: Record<IAppRole, {name: string, color: string}> = {
 
 export const mainMenuList: IMenuItems[] = [
   {
-    label: 'Bosh sahifa',
-    key: ROUTES.home,
-    icon: <HomeOutlined />,
-    children: [
-      {
-        label: <><AppstoreAddOutlined /> Statistika</>,
-        key: ROUTES.home,
-        roleKey: IStaffPerKey.GET_STATISTIC,
-      },
-    ],
+    label: 'Пользователи',
+    key: ROUTES.staffs,
+    icon: <UserSwitchOutlined />,
+  },
+  {
+    label: 'Партнеры',
+    key: ROUTES.partnor,
+    icon: <UserOutlined />,
+  },
+  {
+    label: 'Вид мебели',
+    key: ROUTES.furnutureType,
+    icon: <TableOutlined />,
+  },
+  {
+    label: 'Модели',
+    key: ROUTES.model,
+    icon: <AlignLeftOutlined />,
   },
 ];

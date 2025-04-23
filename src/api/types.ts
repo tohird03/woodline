@@ -1,9 +1,15 @@
 export interface IResponse<TBody, TTotalCalc = any> {
-  totalCount: number;
-  pageNumber: number;
-  pageSize: number;
+  data: {
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+    data: TBody;
+  };
+  calc?: TTotalCalc;
+}
+
+export interface IResponseSingle<TBody> {
   data: TBody;
-  totalCalc?: TTotalCalc;
 }
 
 export interface IOneElement {
@@ -18,6 +24,7 @@ export interface ISuccessResponse {
 export interface IPagination {
   pageNumber?: number;
   pageSize?: number;
+  pagination?: boolean;
   description?: string;
 }
 
@@ -27,16 +34,15 @@ export type TStage = {
 };
 
 export interface IPayment extends IPaymentType {
-  id: string,
+  id: string;
   createdAt: string;
   updatedAt: string;
-  totalPay: number,
+  totalPay: number;
 }
 
 export interface IPaymentType {
-  card: number,
-  cash: number,
-  transfer: number,
-  other: number,
-  description: string,
+  card: number;
+  cash: number;
+  other: number;
+  description: string;
 }

@@ -32,8 +32,10 @@ export const Login = observer(() => {
     authStore.getSignIn(values)
       .then(res => {
         if (res?.data) {
-          setAccessToken(res.data?.tokens?.accessToken);
-          navigate(ROUTES.productsOrder);
+          console.log(res.data);
+
+          setAccessToken(res?.data?.data?.tokens?.accessToken);
+          navigate(ROUTES.partnor);
           addNotification('Success login');
           authStore.getProfile();
         }

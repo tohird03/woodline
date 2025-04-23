@@ -1,0 +1,1 @@
+export {FurnutureType} from './FurnutureType';

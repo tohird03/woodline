@@ -3,6 +3,7 @@ export const stage = process.env.REACT_APP_STAGE || 'dev';
 
 export enum Endpoints {
   Base = '',
+  StaffRoleMany = '/staff-role/many',
 
   // SETTINGS
   SignIn = '/auth/sign-in',
@@ -12,6 +13,18 @@ export enum Endpoints {
   // PAYMENT
   payment = '/payment',
   paymentUpload = '/payment/upload',
+
+  StaffsMany = '/staff/many',
+  StaffsOne = '/staff/one',
+
+  ClientsMany = '/partner/many',
+  ClientsOne = '/partner/one',
+
+  ModelMany = '/model/many',
+  ModelOne = '/model/one',
+
+  FurnutureTypeMany = '/furniture-type/many',
+  FurnutureTypeOne = '/furniture-type/one',
 }
 
 const config: Record<string, TStage> = {
