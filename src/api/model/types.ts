@@ -23,6 +23,6 @@ export interface IModelParams extends IPagination {
 export interface IAddModel {
   id?: string;
   name: string;
-  categoryId: string;
-  qtyPerDay: number;
+  furnitureTypeId: string;
+  partnerId: string;
 }

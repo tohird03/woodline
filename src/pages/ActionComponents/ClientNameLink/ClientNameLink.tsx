@@ -10,14 +10,10 @@ type Props = {
 export const ClientNameLink = ({ client }: Props) => {
   const navigate = useNavigate();
 
-  const handleReloadSingleClient = () => {
-    navigate(ROUTES.partnor.replace(':clientId', String(client?.id)));
-  };
-
   return (
-    <div onClick={handleReloadSingleClient} style={{color: '#17a2b8', cursor: 'pointer'}}>
+    <div style={{color: '#17a2b8', cursor: 'pointer'}}>
       <p style={{ margin: 0, fontWeight: 'bold', fontSize: '14px' }}>
-        {client?.name}
+        {client?.fullname}
       </p>
       <i>+{client?.phone}</i>
     </div>

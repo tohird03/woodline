@@ -2,8 +2,9 @@ import {IPagination} from '../types';
 
 export interface IClientsInfo {
   id: string;
-  name: string;
+  fullname: string;
   phone: string;
+  actionIds: string[];
 }
 
 export interface IGetClientsInfoParams extends IPagination {
@@ -13,6 +14,17 @@ export interface IGetClientsInfoParams extends IPagination {
 
 export interface IAddClientInfo {
   id?: string;
-  name: string;
+  fullname: string;
   phone: string;
+  password: string;
+  actionsToConnect: string[];
+}
+
+export interface IUpdateClient {
+  id?: string;
+  fullname: string;
+  phone: string;
+  password: string;
+  actionsToConnect: string[];
+  actionsToDisconnect: string[];
 }

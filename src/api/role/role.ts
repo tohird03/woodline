@@ -17,6 +17,9 @@ class RoleApi extends Instance {
 
   getAllRoles = (): Promise<IResponse<IRole[]>> =>
     this.get(Endpoints.StaffRoleMany);
+
+  getAllPartnerRoles = (): Promise<IResponse<IRole[]>> =>
+    this.get(Endpoints.PartnerRoleMany);
 }
 
 export const roleApi = new RoleApi(config);

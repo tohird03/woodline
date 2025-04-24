@@ -1,35 +1,53 @@
-import React, {useEffect, useState} from 'react';
-import {observer} from 'mobx-react';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {Form, Input, InputNumber, Modal, TreeSelect, TreeSelectProps} from 'antd';
-import {IAddModel} from '@/api/model/types';
-import {modelStore} from '@/stores/model';
-import {addNotification} from '@/utils';
-import {trimValues} from '@/utils/trimObjectFunc';
+import React, { useEffect, useMemo, useState } from 'react';
+import { observer } from 'mobx-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Form, Input, InputNumber, Modal, Select, TreeSelect, TreeSelectProps } from 'antd';
+import { IAddModel } from '@/api/model/types';
+import { modelStore } from '@/stores/model';
+import { addNotification } from '@/utils';
+import { trimValues } from '@/utils/trimObjectFunc';
+import { furnutureTypeApi } from '@/api/furnuture-type/furnuture-type';
+import { clientsInfoApi } from '@/api/clients';
 
 export const AddModelModal = observer(() => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
 
-  const {mutate: addModel, isPending: addLoading} =
+  const {data: furnutureTypeData} = useQuery({
+    queryKey: ['getFunutureType'],
+    queryFn: () =>
+      furnutureTypeApi.getFurnutureType({
+        pagination: false,
+      }),
+  });
+
+  const {data: providerData} = useQuery({
+    queryKey: ['getProvider'],
+    queryFn: () =>
+      clientsInfoApi.getClientsInfo({
+        pagination: false,
+      }),
+  });
+
+  const { mutate: addModel, isPending: addLoading } =
     useMutation({
       mutationKey: ['addModel'],
       mutationFn: (params: IAddModel) =>
-        modelStore.addModel({...params}),
+        modelStore.addModel({ ...params }),
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ['getModel']});
+        queryClient.invalidateQueries({ queryKey: ['getModel'] });
         handleModalClose();
       },
       onError: addNotification,
 
     });
 
-  const {mutate: updateModel, isPending: updateLoading} =
+  const { mutate: updateModel, isPending: updateLoading } =
     useMutation({
       mutationKey: ['updateModel'],
       mutationFn: (params: IAddModel) => modelStore.updateModel(params),
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ['getModel']});
+        queryClient.invalidateQueries({ queryKey: ['getModel'] });
         handleModalClose();
       },
       onError: addNotification,
@@ -61,6 +79,20 @@ export const AddModelModal = observer(() => {
     form.submit();
   };
 
+  const furnutureTyoeOptions = useMemo(() => (
+    furnutureTypeData?.data?.data.map((furnutureType) => ({
+      value: furnutureType?.id,
+      label: `${furnutureType?.name}`,
+    }))
+  ), [furnutureTypeData]);
+
+  const providerOptions = useMemo(() => (
+    providerData?.data?.data.map((provider) => ({
+      value: provider?.id,
+      label: `${provider?.fullname}`,
+    }))
+  ), [providerData]);
+
   return (
     <Modal
       open={modelStore.isOpenNewModel}
@@ -84,6 +116,30 @@ export const AddModelModal = observer(() => {
           rules={[{ required: true }]}
         >
           <Input placeholder="Название модели" />
+        </Form.Item>
+        <Form.Item
+          label="Vid mebele"
+          rules={[{ required: true }]}
+          name="furnitureTypeId"
+        >
+          <Select
+            showSearch
+            placeholder="Vid mebele"
+            options={furnutureTyoeOptions}
+            allowClear
+          />
+        </Form.Item>
+        <Form.Item
+          label="Provider"
+          rules={[{ required: true }]}
+          name="partnerId"
+        >
+          <Select
+            showSearch
+            placeholder="Provider"
+            options={providerOptions}
+            allowClear
+          />
         </Form.Item>
       </Form>
     </Modal>

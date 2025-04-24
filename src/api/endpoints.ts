@@ -4,6 +4,7 @@ export const stage = process.env.REACT_APP_STAGE || 'dev';
 export enum Endpoints {
   Base = '',
   StaffRoleMany = '/staff-role/many',
+  PartnerRoleMany = '/partner-role/many',
 
   // SETTINGS
   SignIn = '/auth/sign-in',

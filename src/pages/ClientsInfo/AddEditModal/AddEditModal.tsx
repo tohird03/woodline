@@ -1,24 +1,35 @@
 import React, {useEffect, useState} from 'react';
 import {observer} from 'mobx-react';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {Form, Input, InputNumber, Modal} from 'antd';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {Checkbox, Collapse, Form, Input, InputNumber, Modal} from 'antd';
+import {CheckboxChangeEvent} from 'antd/es/checkbox';
+import {roleApi} from '@/api/role';
+import {staffsStore} from '@/stores/staffs';
 import {addNotification} from '@/utils';
 import {regexPhoneNumber} from '@/utils/phoneFormat';
-import { IAddClientInfo, clientsInfoApi } from '@/api/clients';
 import { clientsInfoStore } from '@/stores/clients-info';
+import { IAddClientInfo, IUpdateClient, clientsInfoApi } from '@/api/clients';
 
 export const AddEditModal = observer(() => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
+  const [userPer, setUserPer] = useState<string[]>([]);
+  const [oldPer, setOldPer] = useState<string[]>([]);
+
+  const {data: roleData, isLoading: loadingRole} = useQuery({
+    queryKey: ['getRoles'],
+    queryFn: () => roleApi.getAllPartnerRoles(),
+  });
 
   const {mutate: addNewStaffs} =
     useMutation({
       mutationKey: ['addNewStaffs'],
       mutationFn: (params: IAddClientInfo) => clientsInfoApi.addClients(params),
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ['getClients']});
+        queryClient.invalidateQueries({queryKey: ['getStaffs']});
         handleModalClose();
+        addNotification('Xodim muvaffaqiyatli qo\'shildi');
       },
       onError: addNotification,
       onSettled: async () => {
@@ -26,12 +37,13 @@ export const AddEditModal = observer(() => {
       },
     });
 
-  const {mutate: updateClient} =
+  const {mutate: updateStaffs} =
     useMutation({
-      mutationKey: ['updateClient'],
-      mutationFn: (params: IAddClientInfo) => clientsInfoApi.updateClient(params),
+      mutationKey: ['updateStaffs'],
+      mutationFn: (params: IUpdateClient) => clientsInfoApi.updateClient(params),
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ['getClients']});
+        queryClient.invalidateQueries({queryKey: ['getStaffs']});
+        addNotification('Xodim muvaffaqiyatli o\'zgartirildi');
         handleModalClose();
       },
       onError: addNotification,
@@ -39,25 +51,6 @@ export const AddEditModal = observer(() => {
         setLoading(false);
       },
     });
-
-  const handleSubmit = (values: IAddClientInfo) => {
-    const valueControl = {
-      ...values,
-      phone: `998${values?.phone}`,
-    };
-
-    setLoading(true);
-
-    if (clientsInfoStore?.singleClientInfo) {
-      updateClient({
-        ...valueControl,
-        id: clientsInfoStore?.singleClientInfo?.id!,
-      });
-
-      return;
-    }
-    addNewStaffs(valueControl);
-  };
 
   const handleModalClose = () => {
     clientsInfoStore.setSingleClientInfo(null);
@@ -68,25 +61,70 @@ export const AddEditModal = observer(() => {
     form.submit();
   };
 
+  const handleSubmit = (values: IAddClientInfo) => {
+    setLoading(true);
+
+    if (clientsInfoStore?.singleClientInfo) {
+      const connectPer = userPer?.filter(newPer => !oldPer?.includes(newPer));
+      const disconnectPer = oldPer?.filter(newPer => !userPer?.includes(newPer));
+
+      updateStaffs({
+        fullname: values?.fullname,
+        password: values?.password,
+        phone: `998${values?.phone}`,
+        id: clientsInfoStore?.singleClientInfo?.id!,
+        actionsToConnect: connectPer,
+        actionsToDisconnect: disconnectPer,
+      });
+
+      return;
+    }
+    addNewStaffs({
+      ...values,
+      actionsToConnect: userPer,
+      phone: `998${values?.phone}`,
+    });
+  };
+
+  const handleChangePer = (e: CheckboxChangeEvent, perId: string) => {
+    const findOldAssignPer = userPer?.find((per) => per === perId);
+
+    if (e?.target?.checked && !findOldAssignPer) {
+      setUserPer([...userPer, perId]);
+    } else if (findOldAssignPer) {
+      const filterPer = userPer?.filter((per) => per !== perId);
+
+      setUserPer(filterPer);
+    }
+  };
+
   useEffect(() => {
     if (clientsInfoStore.singleClientInfo) {
-      form.setFieldsValue({
-        ...clientsInfoStore.singleClientInfo,
-        phone: clientsInfoStore.singleClientInfo?.phone?.slice(3),
-      });
+      clientsInfoApi?.getSingleClient(clientsInfoStore?.singleClientInfo?.id)
+        .then(res => {
+          form.setFieldsValue({
+            ...res?.data,
+            phone: res?.data?.phone?.slice(3),
+          });
+          const checkPer = res?.data?.actionIds;
+
+          setUserPer(checkPer);
+          setOldPer(checkPer);
+        });
     }
   }, [clientsInfoStore.singleClientInfo]);
 
   return (
     <Modal
       open={clientsInfoStore.isOpenAddEditClientModal}
-      title={clientsInfoStore.singleClientInfo ? 'Mijozni tahrirlash' : 'Mijozni qo\'shish'}
+      title={clientsInfoStore.singleClientInfo ? 'Xodimni tahrirlash' : 'Xodimni qo\'shish'}
       onCancel={handleModalClose}
       onOk={handleModalOk}
-      okText={clientsInfoStore.singleClientInfo ? 'Mijozni tahrirlash' : 'Mijozni qo\'shish'}
+      okText={clientsInfoStore.singleClientInfo ? 'Xodimni tahrirlash' : 'Xodimni qo\'shish'}
       cancelText="Bekor qilish"
       centered
       confirmLoading={loading}
+      width={600}
     >
       <Form
         form={form}
@@ -95,11 +133,18 @@ export const AddEditModal = observer(() => {
         autoComplete="off"
       >
         <Form.Item
-          name="name"
-          label="Mijoz"
+          name="fullname"
+          label="Xodim"
           rules={[{required: true}]}
         >
           <Input placeholder="F.I.O" />
+        </Form.Item>
+        <Form.Item
+          name="whereFrom"
+          label="Qayerdan kelgan"
+          rules={[{required: true}]}
+        >
+          <Input placeholder="Qayerdan kelgan" />
         </Form.Item>
         <Form.Item
           name="phone"
@@ -119,7 +164,56 @@ export const AddEditModal = observer(() => {
             type="number"
           />
         </Form.Item>
+        <Form.Item
+          name="password"
+          label="Parolni kiriting"
+        >
+          <Input.Password placeholder="Parolni kiriting" />
+        </Form.Item>
+        <Form.Item
+          name="reset-password"
+          label="Parolni qayta kiriting"
+          rules={[
+            {
+              validator(rule, value) {
+                if (value !== form.getFieldValue('password')) {
+                  return Promise.reject('Parollar bir-biriga mos emas');
+                } else {
+                  return Promise.resolve();
+                }
+              },
+              message: 'Parollar bir-biriga mos emas',
+            },
+          ]}
+        >
+          <Input.Password
+            placeholder="Parolni qayta kiriting"
+          />
+        </Form.Item>
       </Form>
+      {roleData?.data?.data?.map(role => (
+        <div key={role?.id}>
+          <Collapse
+            size="small"
+            items={[{
+              key: role?.id,
+              label: role?.name,
+              children:
+                role?.actions?.map((per) => (
+                  <Checkbox
+                    onChange={(e) => handleChangePer(e, per?.id!)}
+                    key={per?.id}
+                    style={{display: 'flex', paddingLeft: '20px'}}
+                    checked={userPer?.includes(per?.id)}
+                  >
+                    {per?.description}
+                  </Checkbox>
+                )),
+            }]}
+          />
+        </div>
+      ))
+      }
     </Modal>
   );
 });
