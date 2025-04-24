@@ -54,3 +54,29 @@
     padding-top: 150px;
   }
 }
+
+.form__phone-input {
+  padding-left: 44px !important;
+}
+.form__password-input {
+  font-size: 14px;
+  letter-spacing: .01rem;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding: 0 12px;
+  margin-left: 0;
+  background: #FFFFFF;
+  border: 1px solid #CACACA;
+  border-radius: 5px;
+  line-height: 25px;
+  height: 35px;
+  outline: none;
+  width: 100%;
+}
+.form__pass-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+  size: 12px;
+}

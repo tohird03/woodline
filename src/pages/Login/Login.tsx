@@ -32,8 +32,6 @@ export const Login = observer(() => {
     authStore.getSignIn(values)
       .then(res => {
         if (res?.data) {
-          console.log(res.data);
-
           setAccessToken(res?.data?.data?.tokens?.accessToken);
           navigate(ROUTES.partnor);
           addNotification('Success login');
@@ -58,12 +56,19 @@ export const Login = observer(() => {
             className={cn('login__form')}
           >
             <Form.Item
-              name="username"
-              label="Username"
-              rules={[{ required: true }]}
+              name="phone"
+              label="Phone"
+              rules={[{required: true}]}
             >
-              <Input
-                placeholder="Username"
+              <PhoneInput
+                country={'uz'}
+                inputProps={{
+                  name: 'phone',
+                  required: true,
+                  autoFocus: true,
+                  className: 'form__password-input form__phone-input',
+                  autocomplete: 'off',
+                }}
               />
             </Form.Item>
             <Form.Item
