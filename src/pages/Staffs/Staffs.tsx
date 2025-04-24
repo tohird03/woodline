@@ -52,10 +52,10 @@ export const Staffs = observer(() => {
   return (
     <main>
       <div className={cn('staffs__head')}>
-        <Typography.Title level={3}>Xodimlar</Typography.Title>
+        <Typography.Title level={3}>Пользователи</Typography.Title>
         <div className={cn('staffs__filter')}>
           <Input
-            placeholder="Xodimlarni qidirish"
+            placeholder="Поиск пользователя"
             allowClear
             onChange={handleSearch}
             className={cn('staffs__search')}
@@ -65,7 +65,7 @@ export const Staffs = observer(() => {
             type="primary"
             icon={<PlusCircleOutlined />}
           >
-            Xodim qoshish
+              Создать пользователя
           </Button>
         </div>
       </div>

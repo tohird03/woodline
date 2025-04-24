@@ -116,11 +116,11 @@ export const AddStaffsModal = observer(() => {
   return (
     <Modal
       open={staffsStore.isOpenAddEditStaffModal}
-      title={staffsStore.singleStaff ? 'Xodimni tahrirlash' : 'Xodimni qo\'shish'}
+      title={staffsStore.singleStaff ? 'Изменить пользователей' : 'Добавить пользователя'}
       onCancel={handleModalClose}
       onOk={handleModalOk}
-      okText={staffsStore.singleStaff ? 'Xodimni tahrirlash' : 'Xodimni qo\'shish'}
-      cancelText="Bekor qilish"
+      okText={staffsStore.singleStaff ? 'Изменить пользователей' : 'Добавить пользователя'}
+      cancelText="Отмена"
       centered
       confirmLoading={loading}
       width={600}
@@ -133,14 +133,14 @@ export const AddStaffsModal = observer(() => {
       >
         <Form.Item
           name="fullname"
-          label="Xodim"
+          label="Имя"
           rules={[{required: true}]}
         >
           <Input placeholder="F.I.O" />
         </Form.Item>
         <Form.Item
           name="phone"
-          label="Telefon raqami: 901234567"
+          label="Номер телефона: 901234567"
           rules={[
             {required: true},
             {
@@ -151,16 +151,16 @@ export const AddStaffsModal = observer(() => {
         >
           <InputNumber
             addonBefore="+998"
-            placeholder="Telefon raqami"
+            placeholder="Номер телефона"
             style={{width: '100%'}}
             type="number"
           />
         </Form.Item>
         <Form.Item
           name="password"
-          label="Parolni kiriting"
+          label="Введите пароль"
         >
-          <Input.Password placeholder="Parolni kiriting" />
+          <Input.Password placeholder="Введите пароль" />
         </Form.Item>
         <Form.Item
           name="reset-password"

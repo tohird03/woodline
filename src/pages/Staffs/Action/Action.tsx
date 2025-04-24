@@ -38,12 +38,12 @@ export const Action: FC<Props> = observer(({staff}) => {
     <div style={{display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center'}}>
       <Button onClick={handleEditStaff} type="primary" icon={<EditOutlined />} />
       <Popconfirm
-        title="Xodimni o'chirish"
-        description="Rostdan ham bu xodimni o'chirishni xohlaysizmi?"
+        title="Удалить пользователя"
+        description="Вы уверены, что хотите удалить этого пользователя?"
         onConfirm={handleDelete}
-        okText="Ha"
+        okText="Да"
         okButtonProps={{style: {background: 'red'}}}
-        cancelText="Yo'q"
+        cancelText="Отмена"
       >
         <Button type="primary" icon={<DeleteOutlined />} danger />
       </Popconfirm>
