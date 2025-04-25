@@ -24,7 +24,7 @@ export const modelColumns: ColumnType<IModel>[] = [
     dataIndex: 'furnutureType',
     title: 'Вид мебели',
     align: 'center',
-    render: (value, record) => record?.furnutureType?.name,
+    render: (value, record) => record?.furnitureType?.name,
   },
   {
     key: 'provider',

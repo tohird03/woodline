@@ -97,7 +97,7 @@ export const AddModelModal = observer(() => {
     if (modelStore.singleModel) {
       form.setFieldsValue({
         name: modelStore.singleModel?.name,
-        furnitureTypeId: modelStore.singleModel?.furnutureType?.id,
+        furnitureTypeId: modelStore.singleModel?.furnitureType?.id,
         providerId: modelStore.singleModel?.provider?.id,
       });
     }

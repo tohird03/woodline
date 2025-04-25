@@ -6,7 +6,7 @@ export interface IModel {
   id: string;
   name: string;
   provider: IClientsInfo;
-  furnutureType: IFurnutureType;
+  furnitureType: IFurnutureType;
 }
 
 export interface IGetModel {
