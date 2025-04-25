@@ -24,7 +24,7 @@ class ModelApi extends Instance {
     this.patch(`${Endpoints.ModelOne}`, params, {params: {id: params?.id}});
 
   deleteModel = (id: string): Promise<AxiosResponse> =>
-    this.delete(`${Endpoints.ModelOne}/${id}`);
+    this.delete(`${Endpoints.ModelOne}`, {params: {id}});
 
 }
 
