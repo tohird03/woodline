@@ -56,7 +56,7 @@ export const ClientsInfo = observer(() => {
   return (
     <main>
       <div className={cn('client-info__head')}>
-        <Typography.Title level={3}>Mijozlar</Typography.Title>
+        <Typography.Title level={3}>Партнеры</Typography.Title>
         <div className={cn('client-info__filter')}>
           <Input
             placeholder="Mijozlarni qidirish"

@@ -4,6 +4,8 @@ export interface IClientsInfo {
   id: string;
   fullname: string;
   phone: string;
+  balance: string;
+  whereFrom: string;
   actionIds: string[];
 }
 

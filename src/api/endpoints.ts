@@ -20,6 +20,7 @@ export enum Endpoints {
 
   ClientsMany = '/partner/many',
   ClientsOne = '/partner/one',
+  Provider = '/partner/many/provider',
 
   ModelMany = '/model/many',
   ModelOne = '/model/one',

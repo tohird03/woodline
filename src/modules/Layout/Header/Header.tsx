@@ -47,7 +47,7 @@ export const Header = observer(({ collapsed, onCollapsedClick, isMobile }: Props
             ? <MenuUnfoldOutlined className="header__icon" />
             : <MenuFoldOutlined className="header__icon" />}
         </Button>
-        {isMobile && <span className="layout__logo-text">SAS Ideal</span>}
+        {isMobile && <span className="layout__logo-text">Woodline</span>}
 
         <div className="header__profile">
           {/* {!isMobile && (

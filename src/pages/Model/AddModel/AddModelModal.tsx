@@ -24,7 +24,7 @@ export const AddModelModal = observer(() => {
   const {data: providerData} = useQuery({
     queryKey: ['getProvider'],
     queryFn: () =>
-      clientsInfoApi.getClientsInfo({
+      clientsInfoApi.getOnlyProviders({
         pagination: false,
       }),
   });
@@ -118,25 +118,25 @@ export const AddModelModal = observer(() => {
           <Input placeholder="Название модели" />
         </Form.Item>
         <Form.Item
-          label="Vid mebele"
+          label="Вид мебели"
           rules={[{ required: true }]}
           name="furnitureTypeId"
         >
           <Select
             showSearch
-            placeholder="Vid mebele"
+            placeholder="Вид мебели"
             options={furnutureTyoeOptions}
             allowClear
           />
         </Form.Item>
         <Form.Item
-          label="Provider"
+          label="Поставщик"
           rules={[{ required: true }]}
           name="partnerId"
         >
           <Select
             showSearch
-            placeholder="Provider"
+            placeholder="Поставщик"
             options={providerOptions}
             allowClear
           />

@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {observer} from 'mobx-react';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {Button, Popconfirm} from 'antd';
+import {Button, Popconfirm, notification} from 'antd';
 import {clientsInfoApi, IClientsInfo} from '@/api/clients';
 import {addNotification} from '@/utils';
 import { clientsInfoStore } from '@/stores/clients-info';
@@ -20,6 +20,7 @@ export const Action: FC<Props> = observer(({client}) => {
     mutationFn: (id: string) => clientsInfoApi.deleteClient(id!),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['getClients']});
+      addNotification('Успешно удалено');
     },
     onError: addNotification,
   });
@@ -37,12 +38,12 @@ export const Action: FC<Props> = observer(({client}) => {
     <div style={{display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center'}}>
       <Button onClick={handleEditProcess} type="primary" icon={<EditOutlined />} />
       <Popconfirm
-        title="Xodimni o'chirish"
-        description="Rostdan ham bu xodimni o'chirishni xohlaysizmi?"
+        title="Удалить модель"
+        description="Вы уверены, что хотите удалить эту модель?"
         onConfirm={handleDelete}
-        okText="Ha"
+        okText="Да"
         okButtonProps={{style: {background: 'red'}}}
-        cancelText="Yo'q"
+        cancelText="Нет"
       >
         <Button type="primary" icon={<DeleteOutlined />} danger />
       </Popconfirm>

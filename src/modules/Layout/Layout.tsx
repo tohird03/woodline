@@ -34,7 +34,7 @@ export const Layout = () => {
       >
         {!isTablet && (
           <div className="layout__logo">
-            {!value && <span className="layout__logo-text">Santexnika Ohangaron</span>}
+            {!value && <span className="layout__logo-text">Woodline</span>}
           </div>
         )}
 

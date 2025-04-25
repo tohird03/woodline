@@ -17,6 +17,7 @@ import 'react-phone-input-2/lib/style.css';
 // @ts-ignore
 import PhoneInput from 'react-phone-input-2';
 import ProductImg from '/public/images/sas-product.jpg';
+import { mainMenuList } from '@/modules/Layout/constants';
 
 const cn = classNames.bind(styles);
 
@@ -35,7 +36,7 @@ export const Login = observer(() => {
           setAccessToken(res?.data?.data?.tokens?.accessToken);
           navigate(ROUTES.partnor);
           addNotification('Success login');
-          authStore.getProfile();
+          authStore.setMainMenuItems(mainMenuList);
         }
       })
       .catch(addNotification)

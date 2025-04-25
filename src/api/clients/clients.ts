@@ -22,6 +22,9 @@ class ClientsInfoApi extends Instance {
   getClientsInfo = (params: IGetClientsInfoParams): Promise<IResponse<IClientsInfo[]>> =>
     this.get(Endpoints.ClientsMany, {params});
 
+  getOnlyProviders = (params: IGetClientsInfoParams): Promise<IResponse<IClientsInfo[]>> =>
+    this.get(Endpoints.Provider, {params});
+
   addClients = (params: IAddClientInfo): Promise<AxiosResponse> =>
     this.post(Endpoints.ClientsOne, params);
 

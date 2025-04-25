@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {observer} from 'mobx-react';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {Checkbox, Collapse, Form, Input, InputNumber, Modal} from 'antd';
-import {CheckboxChangeEvent} from 'antd/es/checkbox';
-import {roleApi} from '@/api/role';
-import {staffsStore} from '@/stores/staffs';
-import {addNotification} from '@/utils';
-import {regexPhoneNumber} from '@/utils/phoneFormat';
+import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Checkbox, Collapse, Form, Input, InputNumber, Modal } from 'antd';
+import { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { roleApi } from '@/api/role';
+import { staffsStore } from '@/stores/staffs';
+import { addNotification } from '@/utils';
+import { regexPhoneNumber } from '@/utils/phoneFormat';
 import { clientsInfoStore } from '@/stores/clients-info';
 import { IAddClientInfo, IUpdateClient, clientsInfoApi } from '@/api/clients';
 
@@ -17,17 +17,17 @@ export const AddEditModal = observer(() => {
   const [userPer, setUserPer] = useState<string[]>([]);
   const [oldPer, setOldPer] = useState<string[]>([]);
 
-  const {data: roleData, isLoading: loadingRole} = useQuery({
+  const { data: roleData, isLoading: loadingRole } = useQuery({
     queryKey: ['getRoles'],
     queryFn: () => roleApi.getAllPartnerRoles(),
   });
 
-  const {mutate: addNewStaffs} =
+  const { mutate: addNewStaffs } =
     useMutation({
       mutationKey: ['addNewStaffs'],
       mutationFn: (params: IAddClientInfo) => clientsInfoApi.addClients(params),
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ['getStaffs']});
+        queryClient.invalidateQueries({ queryKey: ['getStaffs'] });
         handleModalClose();
         addNotification('Xodim muvaffaqiyatli qo\'shildi');
       },
@@ -37,12 +37,12 @@ export const AddEditModal = observer(() => {
       },
     });
 
-  const {mutate: updateStaffs} =
+  const { mutate: updateStaffs } =
     useMutation({
       mutationKey: ['updateStaffs'],
       mutationFn: (params: IUpdateClient) => clientsInfoApi.updateClient(params),
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ['getStaffs']});
+        queryClient.invalidateQueries({ queryKey: ['getStaffs'] });
         addNotification('Xodim muvaffaqiyatli o\'zgartirildi');
         handleModalClose();
       },
@@ -117,10 +117,10 @@ export const AddEditModal = observer(() => {
   return (
     <Modal
       open={clientsInfoStore.isOpenAddEditClientModal}
-      title={clientsInfoStore.singleClientInfo ? 'Xodimni tahrirlash' : 'Xodimni qo\'shish'}
+      title={clientsInfoStore.singleClientInfo ? 'Изменить партнера' : 'Добавить партнера'}
       onCancel={handleModalClose}
       onOk={handleModalOk}
-      okText={clientsInfoStore.singleClientInfo ? 'Xodimni tahrirlash' : 'Xodimni qo\'shish'}
+      okText={clientsInfoStore.singleClientInfo ? 'Изменить партнера' : 'Добавить партнера'}
       cancelText="Bekor qilish"
       centered
       confirmLoading={loading}
@@ -134,23 +134,16 @@ export const AddEditModal = observer(() => {
       >
         <Form.Item
           name="fullname"
-          label="Xodim"
-          rules={[{required: true}]}
+          label="Имя"
+          rules={[{ required: true }]}
         >
           <Input placeholder="F.I.O" />
-        </Form.Item>
-        <Form.Item
-          name="whereFrom"
-          label="Qayerdan kelgan"
-          rules={[{required: true}]}
-        >
-          <Input placeholder="Qayerdan kelgan" />
         </Form.Item>
         <Form.Item
           name="phone"
           label="Telefon raqami: 901234567"
           rules={[
-            {required: true},
+            { required: true },
             {
               pattern: regexPhoneNumber,
               message: 'Raqamni to\'g\'ri kiriting!, Masalan: 901234567',
@@ -160,36 +153,49 @@ export const AddEditModal = observer(() => {
           <InputNumber
             addonBefore="+998"
             placeholder="Telefon raqami"
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             type="number"
           />
         </Form.Item>
         <Form.Item
-          name="password"
-          label="Parolni kiriting"
+          name="whereFrom"
+          label="Откуда пришел"
+          rules={[{ required: true }]}
         >
-          <Input.Password placeholder="Parolni kiriting" />
+          <Input placeholder="Откуда пришел" />
         </Form.Item>
-        <Form.Item
-          name="reset-password"
-          label="Parolni qayta kiriting"
-          rules={[
-            {
-              validator(rule, value) {
-                if (value !== form.getFieldValue('password')) {
-                  return Promise.reject('Parollar bir-biriga mos emas');
-                } else {
-                  return Promise.resolve();
-                }
-              },
-              message: 'Parollar bir-biriga mos emas',
-            },
-          ]}
-        >
-          <Input.Password
-            placeholder="Parolni qayta kiriting"
-          />
-        </Form.Item>
+        {!clientsInfoStore?.singleClientInfo && (
+          <>
+            <Form.Item
+              name="password"
+              label="Введите пароль"
+            >
+              <Input.Password placeholder="Введите пароль" />
+            </Form.Item>
+            <Form.Item
+              name="reset-password"
+              label="Повторите пароль"
+              rules={[
+                {
+                  validator(rule, value) {
+                    if (value !== form.getFieldValue('password')) {
+                      return Promise.reject('Пароли не совпадают.');
+                    } else {
+                      return Promise.resolve();
+                    }
+                  },
+                  message: 'Пароли не совпадают.',
+                },
+              ]}
+            >
+              <Input.Password
+                placeholder="Повторите пароль"
+              />
+            </Form.Item>
+          </>
+        )
+
+        }
       </Form>
       {roleData?.data?.data?.map(role => (
         <div key={role?.id}>
@@ -203,7 +209,7 @@ export const AddEditModal = observer(() => {
                   <Checkbox
                     onChange={(e) => handleChangePer(e, per?.id!)}
                     key={per?.id}
-                    style={{display: 'flex', paddingLeft: '20px'}}
+                    style={{ display: 'flex', paddingLeft: '20px' }}
                     checked={userPer?.includes(per?.id)}
                   >
                     {per?.description}

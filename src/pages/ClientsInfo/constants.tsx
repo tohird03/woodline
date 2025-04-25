@@ -4,6 +4,7 @@ import { IClientsInfo } from '@/api/clients';
 import { Action } from './Action';
 import { formatPhoneNumber } from '@/utils/phoneFormat';
 import { ClientNameLink } from '@/pages/ActionComponents/ClientNameLink';
+import { priceFormat } from '@/utils/priceFormat';
 
 export const clientsColumns: ColumnType<IClientsInfo>[] = [
   {
@@ -16,32 +17,31 @@ export const clientsColumns: ColumnType<IClientsInfo>[] = [
   {
     key: 'name',
     dataIndex: 'name',
-    title: 'Xodim',
+    title: 'Имя',
     align: 'center',
     render: (value, record) => <ClientNameLink client={record} />,
   },
   {
     key: 'phone',
     dataIndex: 'phone',
-    title: 'Telefon raqami',
+    title: 'Номер телефона',
     align: 'center',
     render: (value, record) => `+${formatPhoneNumber(record?.phone)}`,
   },
-  // {
-  //   key: 'debt',
-  //   dataIndex: 'debt',
-  //   title: 'Mijoz qarzi',
-  //   align: 'center',
-  //   render: (value, record) => priceFormat(record?.debt),
-  //   sorter: (a, b) => a?.debt - b?.debt,
-  // },
-  // {
-  //   key: 'lastSale',
-  //   dataIndex: 'lastSale',
-  //   title: 'Oxirgi sotuv',
-  //   align: 'center',
-  //   render: (value, record) => record?.lastSale ? getFullDateFormat(record?.lastSale) : null,
-  // },
+  {
+    key: 'phone',
+    dataIndex: 'phone',
+    title: 'Баланс',
+    align: 'center',
+    render: (value, record) => `${priceFormat(record?.balance)}`,
+  },
+  {
+    key: 'phone',
+    dataIndex: 'phone',
+    title: 'Откуда пришел',
+    align: 'center',
+    render: (value, record) => record?.whereFrom,
+  },
   {
     key: 'action',
     dataIndex: 'action',
@@ -50,4 +50,3 @@ export const clientsColumns: ColumnType<IClientsInfo>[] = [
     render: (value, record) => <Action client={record} />,
   },
 ];
-
