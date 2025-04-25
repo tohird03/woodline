@@ -93,6 +93,16 @@ export const AddModelModal = observer(() => {
     }))
   ), [providerData]);
 
+  useEffect(() => {
+    if (modelStore.singleModel) {
+      form.setFieldsValue({
+        name: modelStore.singleModel?.name,
+        furnitureTypeId: modelStore.singleModel?.furnutureType?.id,
+        providerId: modelStore.singleModel?.provider?.id,
+      });
+    }
+  }, [modelStore.singleModel]);
+
   return (
     <Modal
       open={modelStore.isOpenNewModel}
@@ -132,7 +142,7 @@ export const AddModelModal = observer(() => {
         <Form.Item
           label="Поставщик"
           rules={[{ required: true }]}
-          name="partnerId"
+          name="providerId"
         >
           <Select
             showSearch

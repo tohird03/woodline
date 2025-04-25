@@ -2,6 +2,7 @@ import React from 'react';
 import {ColumnType} from 'antd/es/table';
 import {ModelAction} from './Action';
 import { IModel } from '@/api/model/types';
+import { ClientNameLink } from '../ActionComponents/ClientNameLink';
 
 export const modelColumns: ColumnType<IModel>[] = [
   {
@@ -19,18 +20,18 @@ export const modelColumns: ColumnType<IModel>[] = [
     render: (value) => value,
   },
   {
-    key: 'qtyPerDay',
-    dataIndex: 'qtyPerDay',
+    key: 'furnutureType',
+    dataIndex: 'furnutureType',
     title: 'Вид мебели',
     align: 'center',
-    render: (value) => value,
+    render: (value, record) => record?.furnutureType?.name,
   },
   {
     key: 'provider',
     dataIndex: 'provider',
     title: 'Поставщик',
     align: 'center',
-    render: (value, record) => <span>{record?.category?.title}</span>,
+    render: (value, record) => <ClientNameLink client={record?.provider} />,
   },
   {
     key: 'action',

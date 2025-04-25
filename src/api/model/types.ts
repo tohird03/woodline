@@ -1,13 +1,12 @@
+import { IClientsInfo } from '../clients';
+import { IFurnutureType } from '../furnuture-type/types';
 import {IPagination} from '../types';
 
 export interface IModel {
   id: string;
   name: string;
-  qtyPerDay: number;
-  category: {
-    id: string;
-    title: string;
-  };
+  provider: IClientsInfo;
+  furnutureType: IFurnutureType;
 }
 
 export interface IGetModel {
