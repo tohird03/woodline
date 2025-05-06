@@ -3,7 +3,6 @@ import {observer} from 'mobx-react';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {Form, Input, InputNumber, Modal, Select} from 'antd';
 import {addNotification} from '@/utils';
-import {priceFormat} from '@/utils/priceFormat';
 import {trimValues} from '@/utils/trimObjectFunc';
 import { IAddEditFurnutureType } from '@/api/furnuture-type/types';
 import { furnutureTypeApi } from '@/api/furnuture-type/furnuture-type';

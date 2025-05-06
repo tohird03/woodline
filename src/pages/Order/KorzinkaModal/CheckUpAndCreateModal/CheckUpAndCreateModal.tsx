@@ -6,13 +6,16 @@ import { ICartOrderClient, ICartOrderPayment, ICreateOrder } from '@/api/order/t
 import dayjs from 'dayjs';
 import { DataTable } from '@/components/Datatable/datatable';
 import { checkUpClientInfoColumns, checkUpPrePaymentColumn, checkUpProductsColumn } from './constants';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { orderApi } from '@/api/order';
 import { addNotification } from '@/utils';
+import { useCookies } from 'react-cookie';
 
 export const CheckUpAndCreateModal = observer(() => {
   const [checkUpUserInfo, setCheckUpUserInfo] = useState<ICartOrderClient | null>(null);
   const [payments, setPayments] = useState<ICartOrderPayment[]>([]);
+  const [orderIdCookie, setOrderIdCookie] = useCookies(['orderId']);
+  const queryClient = useQueryClient();
 
   const { data: cartProducts } = useQuery({
     queryKey: ['getCartProducts'],
@@ -29,8 +32,15 @@ export const CheckUpAndCreateModal = observer(() => {
     useMutation({
       mutationKey: ['createOrder'],
       mutationFn: (params: ICreateOrder) => orderApi.createOrder(params),
-      onSuccess: () => {
-        handleCloseModal();
+      onSuccess: async () => {
+        orderStore.setIsOpenCheckUpAndCreateModal(false);
+        queryClient.invalidateQueries({ queryKey: ['getCartProducts'] });
+        const generated = await orderApi.getOrderGenerateId();
+        const newId = generated?.data?.id;
+
+        setOrderIdCookie('orderId', newId, { path: '/' });
+        localStorage.removeItem('corzinkaPayments');
+        localStorage.removeItem('orderClient');
       },
       onError: addNotification,
 
@@ -40,7 +50,7 @@ export const CheckUpAndCreateModal = observer(() => {
     if (checkUpUserInfo) {
       createOrder({
         ...checkUpUserInfo,
-        products: cartProducts?.data?.data!,
+        products: cartProducts?.data?.data!?.map(product => ({...product, modelId: product?.model?.id})),
         payments,
       });
     }

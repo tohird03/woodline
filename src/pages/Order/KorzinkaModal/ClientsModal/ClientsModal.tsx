@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { clientsInfoApi } from '@/api/clients';
 import { ICartOrderClient } from '@/api/order/types';
 import dayjs from 'dayjs';
+import { userInfoWhereFromOptions } from '../ProductsModal/constants';
 
 export const CorzinkaClientsModal = observer(() => {
   const [form] = Form.useForm();
@@ -38,7 +39,9 @@ export const CorzinkaClientsModal = observer(() => {
   };
 
   const handleFinishForm = (values: ICartOrderClient) => {
-    localStorage.setItem('orderClient', JSON.stringify(values));
+    const findClient = clientsData?.data?.data?.find(client => client?.id === values?.clientId);
+
+    localStorage.setItem('orderClient', JSON.stringify({...values, client: findClient}));
   };
 
   const handleClientChange = (value: string) => {
@@ -122,10 +125,7 @@ export const CorzinkaClientsModal = observer(() => {
             showSearch
             placeholder="Откуда"
             optionFilterProp="label"
-            options={[{
-              value: 'instagram',
-              label: 'Instagram',
-            }]}
+            options={userInfoWhereFromOptions}
           />
         </Form.Item>
 

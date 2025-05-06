@@ -34,6 +34,7 @@ export enum Endpoints {
   CartManyMy = '/cart/my/many',
   CartOne = '/cart/one',
   OrderMany = '/order/many',
+  OrderOne = '/order/one',
   OrderCreate = '/order/one-with-payment-product',
 }
 

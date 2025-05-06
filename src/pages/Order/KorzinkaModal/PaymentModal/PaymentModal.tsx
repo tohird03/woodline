@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { orderStore } from '@/stores/order';
 import {
+  Alert,
   Button,
   Col,
   DatePicker,
@@ -15,19 +16,34 @@ import {
 import { observer } from 'mobx-react';
 import { priceFormat } from '@/utils/priceFormat';
 import { ICartOrderPayment } from '@/api/order/types';
-import { orderCartPayments } from './constants';
+import { orderCartPayments, orderPaymentOptions } from './constants';
 
 export const CorzinaPaymentModal = observer(() => {
   const [form] = Form.useForm();
-  const [payments, setPayments] = useState<ICartOrderPayment[]>([]);
+  const fromCurrency = Form.useWatch('fromCurrency', form);
+  const exchangeRate = Form.useWatch('exchangeRate', form);
+  const sum = Form.useWatch('sum', form);
+  const [totalSum, setTotalSum] = useState(0);
 
   useEffect(() => {
     const saved = localStorage.getItem('corzinkaPayments');
 
     if (saved) {
-      setPayments(JSON.parse(saved));
+      orderStore.setPayments(JSON.parse(saved));
     }
   }, []);
+
+  useEffect(() => {
+    if (fromCurrency === 'uzs') {
+      form.setFieldsValue({ exchangeRate: 1 });
+    }
+  }, [fromCurrency, form]);
+
+  useEffect(() => {
+    const cash = (sum || 0) * (exchangeRate || 1);
+
+    setTotalSum(cash);
+  }, [sum, exchangeRate]);
 
   // LocalStorage-ga yozish
   const saveToLocalStorage = (newPayments: ICartOrderPayment[]) => {
@@ -46,9 +62,9 @@ export const CorzinaPaymentModal = observer(() => {
 
   const handleAddPayment = () => {
     form.validateFields().then((values) => {
-      const newPayments = [...payments, values];
+      const newPayments = [...orderStore.payments, {...values, totalSum}];
 
-      setPayments(newPayments);
+      orderStore.setPayments(newPayments);
       saveToLocalStorage(newPayments);
       form.resetFields(); // formani tozalash
     });
@@ -61,6 +77,7 @@ export const CorzinaPaymentModal = observer(() => {
       title="Предоплата"
       onOk={handleSaveModalOk}
       okText="Следующий"
+      okButtonProps={{disabled: orderStore?.payments?.length === 0}}
       cancelText="Назад"
       style={{ top: 0, padding: '15px' }}
       bodyStyle={{ height: '85vh', overflow: 'auto' }}
@@ -72,22 +89,18 @@ export const CorzinaPaymentModal = observer(() => {
             <Form.Item
               rules={[{ required: true }]}
               label="Способ оплаты"
-              name="whereFrom"
+              name="method"
             >
               <Select
                 showSearch
                 placeholder="Способ оплаты"
                 optionFilterProp="label"
-                options={[
-                  { label: 'Наличные', value: 'cash' },
-                  { label: 'Карта', value: 'card' },
-                  { label: 'Банк', value: 'bank' },
-                ]}
+                options={orderPaymentOptions}
               />
             </Form.Item>
           </Col>
           <Col xs={12} lg={4}>
-            <Form.Item label="Сумма" name="cash" initialValue={0}>
+            <Form.Item label="Сумма" name="sum" initialValue={0}>
               <InputNumber
                 placeholder="Сумма"
                 style={{ width: '100%' }}
@@ -96,22 +109,44 @@ export const CorzinaPaymentModal = observer(() => {
             </Form.Item>
           </Col>
           <Col xs={12} lg={4}>
-            <Form.Item label="Валюта" name="currency" initialValue={0}>
-              <InputNumber
+            <Form.Item
+              rules={[{ required: true }]}
+              label="Валюта"
+              name="fromCurrency"
+            >
+              <Select
+                showSearch
                 placeholder="Валюта"
-                style={{ width: '100%' }}
-                formatter={(value) => priceFormat(value)}
+                optionFilterProp="label"
+                options={[
+                  {
+                    value: 'uzs',
+                    label: 'UZS',
+                  },
+                  {
+                    value: 'usd',
+                    label: 'USD',
+                  },
+                ]}
               />
             </Form.Item>
           </Col>
           <Col xs={12} lg={4}>
-            <Form.Item label="Курс валют" name="exchangeRate" initialValue={0}>
+            <Form.Item
+              label="Курс валют"
+              name="exchangeRate"
+              initialValue={1}
+            >
               <InputNumber
                 placeholder="Курс валют"
                 style={{ width: '100%' }}
+                disabled={fromCurrency === 'uzs'}
                 formatter={(value) => priceFormat(value)}
               />
             </Form.Item>
+            <Alert
+              message={priceFormat(totalSum)}
+            />
           </Col>
           <Col xs={12} lg={4}>
             <Form.Item label="Примечание" name="description">
@@ -135,7 +170,7 @@ export const CorzinaPaymentModal = observer(() => {
       {/* Jadvalni forma ostida ko‘rsatamiz */}
       <Table
         columns={orderCartPayments}
-        dataSource={payments}
+        dataSource={orderStore?.payments}
         style={{ marginTop: 24 }}
         pagination={false}
       />

@@ -9,6 +9,7 @@ export const ROUTES = {
 
   order: '/order',
   orderHistory: '/order-history',
+  singleOrder: '/order-history/:orderId',
 } as const;
 
 export const roleChecker = {

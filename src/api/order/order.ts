@@ -26,15 +26,19 @@ class OrderApi extends Instance {
   getCartProducts = (): Promise<IResponse<ICartProducts[]>> =>
     this.get(Endpoints.CartManyMy);
 
+  deleteCartProduct = (id: string): Promise<AxiosResponse> =>
+    this.delete(`${Endpoints.CartOne}`, { params: { id } });
+
   getOrders = (params: IGetOrderParams): Promise<IResponse<IOrder[]>> =>
     this.get(Endpoints.OrderMany);
+
+  getSingleOrder = (orderId: string): Promise<{ data: IOrder }> =>
+    this.get(Endpoints.OrderOne, { params: { id: orderId } });
 
 
   // updateModel = (params: IAddModel): Promise<AxiosResponse> =>
   //   this.patch(`${Endpoints.ModelOne}`, params, {params: {id: params?.id}});
 
-  // deleteModel = (id: string): Promise<AxiosResponse> =>
-  //   this.delete(`${Endpoints.ModelOne}`, {params: {id}});
 }
 
 export const orderApi = new OrderApi(config);

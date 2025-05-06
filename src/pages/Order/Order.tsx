@@ -10,7 +10,7 @@ import { orderStore } from '@/stores/order';
 import { CorzinaProductsModal } from './KorzinkaModal/ProductsModal';
 import { CorzinkaClientsModal } from './KorzinkaModal/ClientsModal';
 import { CorzinaPaymentModal } from './KorzinkaModal/PaymentModal/PaymentModal';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { orderApi } from '@/api/order';
 import { furnutureTypeApi } from '@/api/furnuture-type/furnuture-type';
 import { modelApi } from '@/api/model/model';
@@ -26,6 +26,9 @@ export const Order = observer(() => {
   const [form] = Form.useForm();
   const [orderIdCookie, setOrderIdCookie] = useCookies(['orderId']);
   const [modelOptions, setModelOptions] = useState<SelectOptionType[]>([]);
+  const [saleCount, setSaleCount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const queryClient = useQueryClient();
 
   const { data: orderId } = useQuery({
     queryKey: ['getOrderId', orderIdCookie?.orderId],
@@ -43,6 +46,13 @@ export const Order = observer(() => {
     },
   });
 
+  const { data: cartProducts } = useQuery({
+    queryKey: ['getCartProducts'],
+    queryFn: () =>
+      orderApi.getCartProducts(),
+  });
+
+
   const { data: furnutureTypeData } = useQuery({
     queryKey: ['getFunutureType'],
     queryFn: () =>
@@ -57,6 +67,7 @@ export const Order = observer(() => {
       mutationFn: (params: IAddProductToCart) => orderApi.addProductToCart({ ...params }),
       onSuccess: () => {
         addNotification('Success add product to cart');
+        queryClient.invalidateQueries({ queryKey: ['getCartProducts'] });
         form.resetFields();
       },
       onError: addNotification,
@@ -70,16 +81,15 @@ export const Order = observer(() => {
   const handleFinish = (values: IAddProductToCart) => {
     addProductToCart({
       description: values?.description,
-      direction: 'right',
+      direction: values?.direction,
       modelId: values?.modelId,
       price: values?.price,
       priceWithSale: values?.priceWithSale,
       publicId: values?.publicId,
       quantity: values?.quantity,
-      sale: 10,
-      staffId: '75b128d4-4a0b-4a4b-b92a-1dcdf5a538b8',
+      sale: saleCount,
       tissue: values?.tissue,
-      totalSum: values?.priceWithSale * values?.quantity,
+      totalSum: totalPrice,
     });
   };
 
@@ -107,6 +117,48 @@ export const Order = observer(() => {
     form.submit();
   };
 
+  const handleSumChange = (value: number | null) => {
+    const saleValue = form.getFieldValue('priceWithSale');
+
+    if (!value || !saleValue) {
+      setSaleCount(100);
+
+      return;
+    }
+
+    const calculatedSaleCount = 100 - (saleValue / value) * 100;
+
+    setSaleCount(Number(calculatedSaleCount.toFixed(3)));
+  };
+
+  const handleSaleChange = (value: number | null) => {
+    const sumValue = form.getFieldValue('price');
+    const qty = form.getFieldValue('quantity');
+
+    if (!value) {
+      setSaleCount(100);
+      setTotalPrice(0);
+
+      return;
+    }
+    const calculatedSaleCount =
+      sumValue !== undefined ? 100 - (value / sumValue) * 100 : 0;
+
+    setSaleCount(Number(calculatedSaleCount.toFixed(3)));
+    setTotalPrice(qty ? value * qty : 0);
+  };
+
+  const handleQtyChange = (value: number | null) => {
+    const saleValue = form.getFieldValue('priceWithSale');
+
+    if (!value || !saleValue) {
+      setTotalPrice(0);
+
+      return;
+    }
+    setTotalPrice(value * saleValue);
+  };
+
   const furnutureTyoeOptions = useMemo(() => (
     furnutureTypeData?.data?.data.map((furnutureType) => ({
       value: furnutureType?.id,
@@ -127,7 +179,7 @@ export const Order = observer(() => {
           <Typography.Title level={3}>Заказ</Typography.Title>
           <Badge
             className="site-badge-count-109"
-            count={12}
+            count={cartProducts?.data?.data?.length}
             style={{ backgroundColor: '#52c41a' }}
           >
             <Button
@@ -235,6 +287,7 @@ export const Order = observer(() => {
                     min={0}
                     defaultValue={0}
                     placeholder="Цена"
+                    onChange={handleSumChange}
                     formatter={(value: number | undefined) => priceFormat(value)}
                     className={cn('order-form__price')}
                   />
@@ -250,6 +303,7 @@ export const Order = observer(() => {
                     min={0}
                     defaultValue={0}
                     placeholder="Цена со скидкой"
+                    onChange={handleSaleChange}
                     formatter={(value: number | undefined) => priceFormat(value)}
                     className={cn('order-form__price')}
                   />
@@ -258,7 +312,7 @@ export const Order = observer(() => {
               <Col xs={6} md={4}>
                 <Form.Item label="Скидка">
                   <Badge
-                    count={`${10} %`}
+                    count={`${saleCount} %`}
                   />
                 </Form.Item>
               </Col>
@@ -271,6 +325,7 @@ export const Order = observer(() => {
                     min={0}
                     defaultValue={0}
                     placeholder="Кол-во"
+                    onChange={handleQtyChange}
                     formatter={(value: number | undefined) => priceFormat(value)}
                     className={cn('order-form__price')}
                   />
@@ -279,7 +334,7 @@ export const Order = observer(() => {
               <Col xs={12}>
                 <Form.Item label="Сумма">
                   <Alert
-                    message={`${priceFormat(10)} сум`}
+                    message={`${priceFormat(totalPrice)} сум`}
                     type="info"
                   />
                 </Form.Item>

@@ -29,3 +29,6 @@ export const Order = lazy(() =>
 
 export const OrderHistory = lazy(() =>
   import('@/pages/OrderHistory').then(({OrderHistory}) => ({default: OrderHistory})).catch(handleCatchChunkError));
+
+export const SingleOrder = lazy(() =>
+  import('@/pages/OrderHistory').then(({SingleOrder}) => ({default: SingleOrder})).catch(handleCatchChunkError));

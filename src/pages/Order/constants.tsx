@@ -1,14 +1,16 @@
 export const directionOptions = [
   {
-    value: 'Левый',
+    value: 'left',
     label: 'Левый',
   },
   {
-    value: 'Правый',
+    value: 'right',
     label: 'Правый',
   },
   {
-    value: 'Нет направлений',
+    value: 'none',
     label: 'Нет направлений',
   },
 ];
+
+// right, left, none

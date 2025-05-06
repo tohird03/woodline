@@ -1,3 +1,4 @@
+import { ICartOrderPayment, IOrder } from '@/api/order/types';
 import {makeAutoObservable} from 'mobx';
 
 class OrderStore {
@@ -5,6 +6,8 @@ class OrderStore {
   isOpenCorzinkaClientModal = false;
   isOpenCorzinaPaymentModal = false;
   isOpenCheckUpAndCreateModal = false;
+  singleOrderInfo: IOrder | null = null;
+  payments: ICartOrderPayment[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -24,6 +27,14 @@ class OrderStore {
 
   setIsOpenCheckUpAndCreateModal = (isOpenCheckUpAndCreateModal: boolean) => {
     this.isOpenCheckUpAndCreateModal = isOpenCheckUpAndCreateModal;
+  };
+
+  setSingleOrderInfo = (singleOrderInfo: IOrder | null) => {
+    this.singleOrderInfo = singleOrderInfo;
+  };
+
+  setPayments = (payments: ICartOrderPayment[]) => {
+    this.payments = payments;
   };
 
   reset() {
