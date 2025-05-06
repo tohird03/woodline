@@ -17,6 +17,8 @@ import { observer } from 'mobx-react';
 import { priceFormat } from '@/utils/priceFormat';
 import { ICartOrderPayment } from '@/api/order/types';
 import { orderCartPayments, orderPaymentOptions } from './constants';
+import { useMediaQuery } from '@/utils/mediaQuery';
+import { DataTable } from '@/components/Datatable/datatable';
 
 export const CorzinaPaymentModal = observer(() => {
   const [form] = Form.useForm();
@@ -24,6 +26,7 @@ export const CorzinaPaymentModal = observer(() => {
   const exchangeRate = Form.useWatch('exchangeRate', form);
   const sum = Form.useWatch('sum', form);
   const [totalSum, setTotalSum] = useState(0);
+  const isMobile = useMediaQuery('(max-width: 650px)');
 
   useEffect(() => {
     const saved = localStorage.getItem('corzinkaPayments');
@@ -85,7 +88,7 @@ export const CorzinaPaymentModal = observer(() => {
     >
       <Form form={form} layout="vertical">
         <Row gutter={24} style={{ margin: 0 }}>
-          <Col xs={12} lg={4}>
+          <Col xs={24} lg={4}>
             <Form.Item
               rules={[{ required: true }]}
               label="Способ оплаты"
@@ -99,7 +102,7 @@ export const CorzinaPaymentModal = observer(() => {
               />
             </Form.Item>
           </Col>
-          <Col xs={12} lg={4}>
+          <Col xs={24} lg={4}>
             <Form.Item label="Сумма" name="sum" initialValue={0}>
               <InputNumber
                 placeholder="Сумма"
@@ -108,7 +111,7 @@ export const CorzinaPaymentModal = observer(() => {
               />
             </Form.Item>
           </Col>
-          <Col xs={12} lg={4}>
+          <Col xs={24} lg={4}>
             <Form.Item
               rules={[{ required: true }]}
               label="Валюта"
@@ -131,7 +134,7 @@ export const CorzinaPaymentModal = observer(() => {
               />
             </Form.Item>
           </Col>
-          <Col xs={12} lg={4}>
+          <Col xs={24} lg={4}>
             <Form.Item
               label="Курс валют"
               name="exchangeRate"
@@ -148,7 +151,7 @@ export const CorzinaPaymentModal = observer(() => {
               message={priceFormat(totalSum)}
             />
           </Col>
-          <Col xs={12} lg={4}>
+          <Col xs={24} lg={4}>
             <Form.Item label="Примечание" name="description">
               <Input.TextArea
                 placeholder="Примечание"
@@ -159,7 +162,7 @@ export const CorzinaPaymentModal = observer(() => {
               />
             </Form.Item>
           </Col>
-          <Col xs={12} lg={4} style={{ alignSelf: 'center' }}>
+          <Col xs={24} lg={4} style={{ alignSelf: 'center' }}>
             <Button style={{ width: '100%' }} type="primary" onClick={handleAddPayment}>
               Добавить
             </Button>
@@ -167,12 +170,11 @@ export const CorzinaPaymentModal = observer(() => {
         </Row>
       </Form>
 
-      {/* Jadvalni forma ostida ko‘rsatamiz */}
-      <Table
+      <DataTable
         columns={orderCartPayments}
-        dataSource={orderStore?.payments}
-        style={{ marginTop: 24 }}
+        data={orderStore?.payments}
         pagination={false}
+        isMobile={isMobile}
       />
     </Modal>
   );
