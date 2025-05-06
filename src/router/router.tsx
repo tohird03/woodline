@@ -6,7 +6,7 @@ import {ROUTES} from '@/constants';
 import {Layout} from '@/modules/Layout';
 import {
   FurnutureType,
-  Login, Model, Partnor, Staffs,
+  Login, Model, Order, OrderHistory, Partnor, Staffs,
 } from './lazy';
 import {ProtectedRoutes} from './ProtectedRoutes';
 import {PublicRoutes} from './PublicRoutes';
@@ -39,6 +39,15 @@ export const Router = ({isAuth}: Props) => useRoutes([
           {
             element: <Suspense fallback={<Loading />}><FurnutureType /></Suspense>,
             path: ROUTES.furnutureType,
+          },
+          // SELLER
+          {
+            element: <Suspense fallback={<Loading />}><Order /></Suspense>,
+            path: ROUTES.order,
+          },
+          {
+            element: <Suspense fallback={<Loading />}><OrderHistory /></Suspense>,
+            path: ROUTES.orderHistory,
           },
           // SETTING ROUTES
           {

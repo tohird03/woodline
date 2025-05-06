@@ -27,6 +27,14 @@ export enum Endpoints {
 
   FurnutureTypeMany = '/furniture-type/many',
   FurnutureTypeOne = '/furniture-type/one',
+
+  // Order
+  GenerateOrderId = '/public-id/generate',
+  CartMany = '/cart/many',
+  CartManyMy = '/cart/my/many',
+  CartOne = '/cart/one',
+  OrderMany = '/order/many',
+  OrderCreate = '/order/one-with-payment-product',
 }
 
 const config: Record<string, TStage> = {

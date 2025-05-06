@@ -1,0 +1,1 @@
+export {CorzinaPaymentModal} from './PaymentModal';

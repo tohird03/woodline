@@ -22,3 +22,10 @@ export const FurnutureType = lazy(() =>
 
 export const Model = lazy(() =>
   import('@/pages/Model').then(({Model}) => ({default: Model})).catch(handleCatchChunkError));
+
+// Order
+export const Order = lazy(() =>
+  import('@/pages/Order').then(({Order}) => ({default: Order})).catch(handleCatchChunkError));
+
+export const OrderHistory = lazy(() =>
+  import('@/pages/OrderHistory').then(({OrderHistory}) => ({default: OrderHistory})).catch(handleCatchChunkError));

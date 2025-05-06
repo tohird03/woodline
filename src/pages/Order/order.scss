@@ -1,0 +1,22 @@
+.order-form {
+  width: 100%;
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  &__price {
+    width: 100%;
+  }
+}

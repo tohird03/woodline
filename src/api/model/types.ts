@@ -15,8 +15,9 @@ export interface IGetModel {
 }
 
 export interface IModelParams extends IPagination {
-  name: string;
+  name?: string;
   categoryId?: string;
+  furnitureTypeId?: string;
 }
 
 export interface IAddModel {

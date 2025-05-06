@@ -5,7 +5,6 @@ import { Button, Input, TreeSelect, TreeSelectProps, Typography } from 'antd';
 import classNames from 'classnames';
 import { DataTable } from '@/components/Datatable/datatable';
 import { modelStore } from '@/stores/model';
-import { addNotification } from '@/utils';
 import { getPaginationParams } from '@/utils/getPaginationParams';
 import { useMediaQuery } from '@/utils/mediaQuery';
 import { AddModelModal } from './AddModel';

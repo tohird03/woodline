@@ -6,6 +6,7 @@ import {
   ContactsOutlined,
   DownloadOutlined,
   FileSyncOutlined,
+  HistoryOutlined,
   HomeOutlined,
   SettingOutlined,
   ShoppingCartOutlined,
@@ -87,5 +88,15 @@ export const mainMenuList: IMenuItems[] = [
     label: 'Модели',
     key: ROUTES.model,
     icon: <AlignLeftOutlined />,
+  },
+  {
+    label: 'Заказ',
+    key: ROUTES.order,
+    icon: <ShoppingCartOutlined />,
+  },
+  {
+    label: 'Мои заказы',
+    key: ROUTES.orderHistory,
+    icon: <HistoryOutlined />,
   },
 ];

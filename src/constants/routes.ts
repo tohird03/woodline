@@ -6,6 +6,9 @@ export const ROUTES = {
   partnor: '/partnor',
   furnutureType: '/furnuture-type',
   model: '/model',
+
+  order: '/order',
+  orderHistory: '/order-history',
 } as const;
 
 export const roleChecker = {

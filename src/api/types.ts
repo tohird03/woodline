@@ -46,3 +46,8 @@ export interface IPaymentType {
   other: number;
   description: string;
 }
+
+export interface SelectOptionType {
+  value: string;
+  label: string;
+};
