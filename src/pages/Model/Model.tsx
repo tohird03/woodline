@@ -17,7 +17,6 @@ const cn = classNames.bind(styles);
 export const Model = observer(() => {
   const isMobile = useMediaQuery('(max-width: 800px)');
 
-
   const { data: model, isLoading: loading } = useQuery({
     queryKey: ['getModel', modelStore.modelCategoryId, modelStore.page, modelStore.limit, modelStore.search],
     queryFn: () =>

@@ -1,0 +1,1 @@
+export {producerStore} from './producer';

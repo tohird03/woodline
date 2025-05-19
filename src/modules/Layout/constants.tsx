@@ -2,6 +2,8 @@ import React from 'react';
 import {
   AlignLeftOutlined,
   AppstoreAddOutlined,
+  BankOutlined,
+  CarOutlined,
   CodeSandboxOutlined,
   ContactsOutlined,
   DownloadOutlined,
@@ -9,6 +11,7 @@ import {
   HistoryOutlined,
   HomeOutlined,
   SettingOutlined,
+  ShopOutlined,
   ShoppingCartOutlined,
   SolutionOutlined,
   TableOutlined,
@@ -98,5 +101,20 @@ export const mainMenuList: IMenuItems[] = [
     label: 'Мои заказы',
     key: ROUTES.orderHistory,
     icon: <HistoryOutlined />,
+  },
+  {
+    label: 'Поставщик',
+    key: ROUTES.producer,
+    icon: <CarOutlined />,
+  },
+  {
+    label: 'Выставочный зал',
+    key: ROUTES.showroom,
+    icon: <ShopOutlined />,
+  },
+  {
+    label: 'Склады',
+    key: ROUTES.warehouse,
+    icon: <BankOutlined />,
   },
 ];

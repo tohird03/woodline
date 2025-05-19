@@ -32,6 +32,7 @@ export interface ICartProducts {
   description: string;
   price: string;
   priceWithSale: number;
+  direction: string;
 }
 
 export interface ICartOrderClient {

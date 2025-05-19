@@ -1,0 +1,1 @@
+export {storehouseApi} from './storehouse';

@@ -10,6 +10,10 @@ export const ROUTES = {
   order: '/order',
   orderHistory: '/order-history',
   singleOrder: '/order-history/:orderId',
+
+  producer: '/producer',
+  showroom: '/showroom',
+  warehouse: '/warehouse',
 } as const;
 
 export const roleChecker = {

@@ -36,6 +36,9 @@ export enum Endpoints {
   OrderMany = '/order/many',
   OrderOne = '/order/one',
   OrderCreate = '/order/one-with-payment-product',
+
+  StorehouseMany = '/storehouse/many',
+  StorehouseOne = '/storehouse/one',
 }
 
 const config: Record<string, TStage> = {

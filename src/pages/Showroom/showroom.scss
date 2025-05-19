@@ -1,0 +1,29 @@
+.showroom__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.showroom__filter {
+  display: flex;
+  flex-direction: row;
+}
+.showroom__search {
+  width: 250px;
+  margin-right: 10px;
+}
+
+@media only screen and (max-width: 800px) {
+  .showroom__head {
+    flex-direction: column;
+  }
+  .showroom__filter {
+    display: flex;
+    flex-direction: column;
+    gap: 15px !important;
+    width: 100%;
+  }
+  .showroom__search {
+    width: 100%;
+  }
+}
