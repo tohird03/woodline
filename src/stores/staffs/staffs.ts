@@ -1,6 +1,8 @@
 import {makeAutoObservable} from 'mobx';
 import {IGetStaffsParams, IStaffs, staffsApi} from '@/api/staffs';
 import {addNotification} from '@/utils';
+import { usersApi } from '@/api/users/users';
+import { IGetUsersParams } from '@/api/users/types';
 
 class Staffs {
   pageNumber = 1;
@@ -13,8 +15,8 @@ class Staffs {
     makeAutoObservable(this);
   }
 
-  getStaffs = (params: IGetStaffsParams) =>
-    staffsApi.getStaffs(params)
+  getStaffs = (params: IGetUsersParams) =>
+    usersApi.getUsers(params)
       .then(res => res)
       .catch(addNotification);
 

@@ -16,4 +16,6 @@ export enum ERoleName {
   ADMIN = 'admin',
   PROVIDER = 'provider',
   CLIENT = 'client',
+  SELLER = 'seller',
+  STOREKEEPER = 'storekeeper',
 }

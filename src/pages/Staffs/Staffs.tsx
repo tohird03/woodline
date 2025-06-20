@@ -11,6 +11,7 @@ import {useMediaQuery} from '@/utils/mediaQuery';
 import {AddStaffsModal} from './AddStaffsModal';
 import {staffsColumns} from './constants';
 import styles from './staffs.scss';
+import { ERoleName } from '@/api/role';
 
 const cn = classNames.bind(styles);
 
@@ -29,6 +30,7 @@ export const Staffs = observer(() => {
         pageNumber: staffsStore.pageNumber,
         pageSize: staffsStore.pageSize,
         search: staffsStore.search!,
+        roleNames: [ERoleName.ADMIN, ERoleName.SELLER, ERoleName.STOREKEEPER],
       }),
   });
 
