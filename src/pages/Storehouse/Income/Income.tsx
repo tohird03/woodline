@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import {DataTable} from '@/components/Datatable/datatable';
 import {getPaginationParams} from '@/utils/getPaginationParams';
 import {useMediaQuery} from '@/utils/mediaQuery';
-import styles from './income.scss';
+import styles from './Income.scss';
 import { IStorehouseType } from '@/api/storehouse/type';
 import { incomeColumns } from './constants';
 import { incomeStores } from '@/stores/storehouse';
