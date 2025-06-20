@@ -43,3 +43,9 @@ export const Showroom = lazy(() =>
 
 export const Warehouse = lazy(() =>
   import('@/pages/Warehouse').then(({ Warehouse }) => ({ default: Warehouse })).catch(handleCatchChunkError));
+
+export const Income = lazy(() =>
+  import('@/pages/Storehouse').then(({ Income }) => ({ default: Income })).catch(handleCatchChunkError));
+
+export const Output = lazy(() =>
+  import('@/pages/Storehouse').then(({ Output }) => ({ default: Output })).catch(handleCatchChunkError));

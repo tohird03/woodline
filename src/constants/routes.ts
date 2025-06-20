@@ -14,6 +14,9 @@ export const ROUTES = {
   producer: '/producer',
   showroom: '/showroom',
   warehouse: '/warehouse',
+  income: '/income',
+  output: '/output',
+  singleIncome: '/income/:incomeId',
 } as const;
 
 export const roleChecker = {

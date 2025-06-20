@@ -6,7 +6,8 @@ import {ROUTES} from '@/constants';
 import {Layout} from '@/modules/Layout';
 import {
   FurnutureType,
-  Login, Model, Order, OrderHistory, Partnor, Producer, Showroom, SingleOrder, Staffs, Warehouse,
+  Income,
+  Login, Model, Order, OrderHistory, Output, Partnor, Producer, Showroom, SingleOrder, Staffs, Warehouse,
 } from './lazy';
 import {ProtectedRoutes} from './ProtectedRoutes';
 import {PublicRoutes} from './PublicRoutes';
@@ -66,6 +67,14 @@ export const Router = ({isAuth}: Props) => useRoutes([
           {
             element: <Suspense fallback={<Loading />}><Warehouse /></Suspense>,
             path: ROUTES.warehouse,
+          },
+          {
+            element: <Suspense fallback={<Loading />}><Income /></Suspense>,
+            path: ROUTES.income,
+          },
+          {
+            element: <Suspense fallback={<Loading />}><Output /></Suspense>,
+            path: ROUTES.output,
           },
           // SETTING ROUTES
           {

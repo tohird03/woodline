@@ -11,6 +11,7 @@ import { AddEditModal } from './AddEditModal';
 import styles from './client-info.scss';
 import { clientsColumns } from './constants';
 import { clientsInfoStore } from '@/stores/clients-info';
+import { ERoleName } from '@/api/role';
 
 const cn = classNames.bind(styles);
 
@@ -31,7 +32,7 @@ export const ClientsInfo = observer(() => {
         pageNumber: clientsInfoStore.pageNumber,
         pageSize: clientsInfoStore.pageSize,
         search: clientsInfoStore.search!,
-        debt: clientsInfoStore.debt!,
+        roleNames: [ERoleName.CLIENT, ERoleName.PROVIDER],
       }),
   });
 

@@ -1,0 +1,1 @@
+export {incomeStores} from './income';

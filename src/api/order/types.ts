@@ -1,5 +1,6 @@
 import { IClientsInfo } from '../clients';
 import { IModel } from '../model/types';
+import { IProduct } from '../products/types';
 import { IPagination } from '../types';
 
 export interface IGenerateId {
@@ -9,16 +10,21 @@ export interface IGenerateId {
 }
 
 export interface IAddProductToCart {
-  description: string;
-  direction: string;
-  modelId: string;
-  price: number;
-  priceWithSale: number;
-  publicId: string;
-  quantity: number;
-  sale: number;
-  tissue: string;
-  totalSum: number;
+  spsId?: string;
+
+  price?: number;
+  priceWithSale?: number;
+  sale?: number;
+  totalSum?: number;
+  description?: string;
+
+  productDetail?: {
+    quantity?: number;
+    direction: string;
+    modelId: string;
+    publicId: string;
+    tissue: string;
+  };
 }
 
 export interface ICartProducts {
@@ -33,6 +39,13 @@ export interface ICartProducts {
   price: string;
   priceWithSale: number;
   direction: string;
+  sps: {
+    status: string;
+    sp: {
+      id: string;
+      product: IProduct;
+    };
+  };
 }
 
 export interface ICartOrderClient {

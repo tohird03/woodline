@@ -6,10 +6,16 @@ export enum Endpoints {
   StaffRoleMany = '/staff-role/many',
   PartnerRoleMany = '/partner-role/many',
 
+  // USERS
+  UsersMany = '/user/many',
+
   // SETTINGS
   SignIn = '/auth/sign-in',
   RefreshToken = '/dashboard-auth/refresh',
   UserProfile = '/admin/profile',
+
+  // PRODUCT
+  ProductMany = '/product/many',
 
   // PAYMENT
   payment = '/payment',
@@ -37,8 +43,19 @@ export enum Endpoints {
   OrderOne = '/order/one',
   OrderCreate = '/order/one-with-payment-product',
 
+  SpsProductMany = '/storehouse-product-status/many',
+
   StorehouseMany = '/storehouse/many',
   StorehouseOne = '/storehouse/one',
+
+  InventoryMany = '/inventory/many',
+  InventoryOne = '/inventory/one',
+
+  PurchaseMany = '/purchase/many',
+  PurchaseOne = '/purchase/one',
+
+  SellingMany = '/selling/many',
+  SellingOne = '/selling/one',
 }
 
 const config: Record<string, TStage> = {

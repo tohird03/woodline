@@ -34,11 +34,6 @@ class OrderApi extends Instance {
 
   getSingleOrder = (orderId: string): Promise<{ data: IOrder }> =>
     this.get(Endpoints.OrderOne, { params: { id: orderId } });
-
-
-  // updateModel = (params: IAddModel): Promise<AxiosResponse> =>
-  //   this.patch(`${Endpoints.ModelOne}`, params, {params: {id: params?.id}});
-
 }
 
 export const orderApi = new OrderApi(config);

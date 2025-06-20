@@ -2,6 +2,8 @@ import React from 'react';
 import {
   AlignLeftOutlined,
   AppstoreAddOutlined,
+  ArrowDownOutlined,
+  ArrowUpOutlined,
   BankOutlined,
   CarOutlined,
   CodeSandboxOutlined,
@@ -116,5 +118,15 @@ export const mainMenuList: IMenuItems[] = [
     label: 'Склады',
     key: ROUTES.warehouse,
     icon: <BankOutlined />,
+  },
+  {
+    label: 'Приходы',
+    key: ROUTES.income,
+    icon: <ArrowDownOutlined />,
+  },
+  {
+    label: 'Расходы',
+    key: ROUTES.output,
+    icon: <ArrowUpOutlined />,
   },
 ];

@@ -11,3 +11,9 @@ export interface IPermission {
   description: string;
   url: string;
 }
+
+export enum ERoleName {
+  ADMIN = 'admin',
+  PROVIDER = 'provider',
+  CLIENT = 'client',
+}

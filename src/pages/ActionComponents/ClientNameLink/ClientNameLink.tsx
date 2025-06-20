@@ -1,10 +1,10 @@
 import React from 'react';
-import { IClientsInfo } from '@/api/clients';
 import { useNavigate } from 'react-router-dom';
 import { formatPhoneNumber } from '@/utils/phoneFormat';
+import { IUser } from '@/api/users/types';
 
 type Props = {
-  client: IClientsInfo;
+  client: IUser;
 };
 
 export const ClientNameLink = ({ client }: Props) => {

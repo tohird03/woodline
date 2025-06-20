@@ -1,6 +1,8 @@
 import {makeAutoObservable} from 'mobx';
 import {clientsInfoApi, IClientsInfo, IGetClientsInfoParams} from '@/api/clients';
 import {addNotification} from '@/utils';
+import { usersApi } from '@/api/users/users';
+import { IGetUsersParams } from '@/api/users/types';
 
 class ClientsInfoStore {
   pageNumber = 1;
@@ -14,8 +16,8 @@ class ClientsInfoStore {
     makeAutoObservable(this);
   }
 
-  getClients = (params: IGetClientsInfoParams) =>
-    clientsInfoApi.getClientsInfo(params)
+  getClients = (params: IGetUsersParams) =>
+    usersApi.getUsers(params)
       .then(res => res)
       .catch(addNotification);
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { ColumnType } from 'antd/es/table';
 import { ICartProducts } from '@/api/order/types';
@@ -9,13 +10,13 @@ export const corzinkaProductModal: ColumnType<ICartProducts>[] = [
     key: 'index',
     title: 'ID',
     dataIndex: 'index',
-    render: (value, record, index) => record?.publicId,
+    render: (value, record, index) => record?.sps?.sp?.product?.publicId,
   },
   {
     key: 'id',
     dataIndex: 'id',
     title: 'Модель',
-    render: (value, record, index) => record?.model?.name,
+    render: (value, record, index) => record?.sps?.sp?.product?.model?.name,
   },
   {
     key: 'qty',
@@ -27,7 +28,7 @@ export const corzinkaProductModal: ColumnType<ICartProducts>[] = [
     key: 'tissue',
     dataIndex: 'tissue',
     title: 'Ткань',
-    render: (value, record, index) => record?.tissue,
+    render: (value, record, index) => record?.sps?.sp?.product?.tissue,
   },
   {
     key: 'description',
@@ -69,15 +70,15 @@ export const corzinkaProductModal: ColumnType<ICartProducts>[] = [
 ];
 
 export const userInfoWhereFromOptions = [
-  { label: "Кол центр", value: "Кол центр" },
-  { label: "т.г.", value: "т.г." },
-  { label: "инстаграм.", value: "инстаграм." },
-  { label: "фейсбук", value: "фейсбук" },
-  { label: "наружная реклама", value: "наружная реклама" },
-  { label: "посоветовали.", value: "посоветовали." },
-  { label: "OLX.", value: "OLX." },
-  { label: "Диллер", value: "Диллер" },
-  { label: "Новостные каналы", value: "Новостные каналы" },
-  { label: "Телевидение", value: "Телевидение" },
-  { label: "Прохожие", value: "Прохожие" },
+  { label: 'Кол центр', value: 'Кол центр' },
+  { label: 'т.г.', value: 'т.г.' },
+  { label: 'инстаграм.', value: 'инстаграм.' },
+  { label: 'фейсбук', value: 'фейсбук' },
+  { label: 'наружная реклама', value: 'наружная реклама' },
+  { label: 'посоветовали.', value: 'посоветовали.' },
+  { label: 'OLX.', value: 'OLX.' },
+  { label: 'Диллер', value: 'Диллер' },
+  { label: 'Новостные каналы', value: 'Новостные каналы' },
+  { label: 'Телевидение', value: 'Телевидение' },
+  { label: 'Прохожие', value: 'Прохожие' },
 ];

@@ -8,6 +8,8 @@ import { addNotification } from '@/utils';
 import { trimValues } from '@/utils/trimObjectFunc';
 import { furnutureTypeApi } from '@/api/furnuture-type/furnuture-type';
 import { clientsInfoApi } from '@/api/clients';
+import { usersApi } from '@/api/users/users';
+import { ERoleName } from '@/api/role';
 
 export const AddModelModal = observer(() => {
   const [form] = Form.useForm();
@@ -21,11 +23,12 @@ export const AddModelModal = observer(() => {
       }),
   });
 
-  const {data: providerData} = useQuery({
-    queryKey: ['getProvider'],
+  const { data: providerData, isLoading: loadingProvider } = useQuery({
+    queryKey: ['getProviders'],
     queryFn: () =>
-      clientsInfoApi.getOnlyProviders({
+      usersApi.getUsers({
         pagination: false,
+        roleNames: [ERoleName.PROVIDER],
       }),
   });
 
