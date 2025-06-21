@@ -15,6 +15,7 @@ import { ShowIncomeProductModal } from './ShowProductsModal';
 
 const cn = classNames.bind(styles);
 
+
 export const Income = observer(() => {
   const isMobile = useMediaQuery('(max-width: 800px)');
 
