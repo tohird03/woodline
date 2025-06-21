@@ -92,7 +92,7 @@ export const checkUpProductsColumn: ColumnType<ICartProducts>[] = [
 export const checkUpPrePaymentColumn: ColumnType<ICartOrderPayment>[] = [
   {
     title: 'Способ оплаты',
-    dataIndex: 'whereFrom',
+    dataIndex: 'source',
     render: (value, record) => <span>{orderPaymentType[record?.method]}</span>,
   },
   {

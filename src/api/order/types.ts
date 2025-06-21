@@ -39,10 +39,18 @@ export interface ICartProducts {
   price: string;
   priceWithSale: number;
   direction: string;
+  products: ISpsProduct[];
+}
+
+export interface ISpsProduct {
+  quantity: number;
+  price: string;
+  priceWithSale: number;
+  sale: number;
+  totalSum: number;
+  description: string;
   sps: {
-    status: string;
     sp: {
-      id: string;
       product: IProduct;
     };
   };
@@ -53,7 +61,7 @@ export interface ICartOrderClient {
   clientId: string;
   deliveryDate: string;
   deliveryAddress: string;
-  whereFrom: string;
+  source: string;
 }
 
 export interface ICartOrderPayment {

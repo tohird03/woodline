@@ -40,7 +40,7 @@ export const clientsColumns: ColumnType<IClientsInfo>[] = [
     dataIndex: 'phone',
     title: 'Откуда пришел',
     align: 'center',
-    render: (value, record) => record?.whereFrom,
+    render: (value, record) => record?.source,
   },
   {
     key: 'action',

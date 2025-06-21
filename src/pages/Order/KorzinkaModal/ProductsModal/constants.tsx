@@ -69,7 +69,7 @@ export const corzinkaProductModal: ColumnType<ICartProducts>[] = [
   },
 ];
 
-export const userInfoWhereFromOptions = [
+export const userInfosourceOptions = [
   { label: 'Кол центр', value: 'Кол центр' },
   { label: 'т.г.', value: 'т.г.' },
   { label: 'инстаграм.', value: 'инстаграм.' },

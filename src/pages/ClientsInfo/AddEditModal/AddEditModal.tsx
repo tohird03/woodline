@@ -158,7 +158,7 @@ export const AddEditModal = observer(() => {
           />
         </Form.Item>
         <Form.Item
-          name="whereFrom"
+          name="source"
           label="Откуда пришел"
           rules={[{ required: true }]}
         >

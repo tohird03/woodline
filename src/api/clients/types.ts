@@ -5,7 +5,7 @@ export interface IClientsInfo {
   fullname: string;
   phone: string;
   balance: string;
-  whereFrom: string;
+  source: string;
   actionIds: string[];
 }
 

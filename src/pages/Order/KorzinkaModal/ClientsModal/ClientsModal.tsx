@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { clientsInfoApi } from '@/api/clients';
 import { ICartOrderClient } from '@/api/order/types';
 import dayjs from 'dayjs';
-import { userInfoWhereFromOptions } from '../ProductsModal/constants';
+import { userInfosourceOptions } from '../ProductsModal/constants';
 import { usersApi } from '@/api/users/users';
 import { ERoleName } from '@/api/role';
 
@@ -122,13 +122,13 @@ export const CorzinkaClientsModal = observer(() => {
         <Form.Item
           rules={[{ required: true }]}
           label="Откуда пришли:"
-          name="whereFrom"
+          name="source"
         >
           <Select
             showSearch
             placeholder="Откуда"
             optionFilterProp="label"
-            options={userInfoWhereFromOptions}
+            options={userInfosourceOptions}
           />
         </Form.Item>
 

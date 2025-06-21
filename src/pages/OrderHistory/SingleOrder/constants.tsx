@@ -1,5 +1,5 @@
 import { IClientsInfo } from '@/api/clients';
-import { ICartOrderPayment, ICartProducts, IOrder } from '@/api/order/types';
+import { ICartOrderPayment, ICartProducts, IOrder, ISpsProduct } from '@/api/order/types';
 import { dateFormat } from '@/utils/getDateFormat';
 import { phoneFormat } from '@/utils/phoneFormat';
 import { ColumnType } from 'antd/es/table';
@@ -45,7 +45,7 @@ export const orderClientsInfo: ColumnType<IOrder>[] = [
     title: 'Откуда пришли',
     key: 'where_from',
     dataIndex: 'where_from',
-    render: (_, record) => <>{record?.client?.whereFrom}</>,
+    render: (_, record) => <>{record?.client?.source}</>,
   },
   {
     title: 'Дата доставки',
@@ -58,7 +58,7 @@ export const orderClientsInfo: ColumnType<IOrder>[] = [
 export const orderPayments: ColumnType<ICartOrderPayment>[] = [
   {
     title: 'Способ оплаты',
-    dataIndex: 'whereFrom',
+    dataIndex: 'source',
     render: (value, record) => orderPaymentType[record?.method],
   },
   {
@@ -88,18 +88,18 @@ export const orderPayments: ColumnType<ICartOrderPayment>[] = [
   },
 ];
 
-export const orderProductColumns: ColumnType<ICartProducts>[] = [
+export const orderProductColumns: ColumnType<ISpsProduct>[] = [
   {
     key: 'index',
     title: 'ID',
     dataIndex: 'index',
-    render: (value, record, index) => record?.publicId,
+    render: (value, record, index) => record?.sps?.sp?.product?.publicId,
   },
   {
     key: 'id',
     dataIndex: 'id',
     title: 'Модель',
-    render: (value, record, index) => record?.model?.name,
+    render: (value, record, index) => record?.sps?.sp?.product?.model?.name,
   },
   {
     key: 'qty',
@@ -111,7 +111,7 @@ export const orderProductColumns: ColumnType<ICartProducts>[] = [
     key: 'tissue',
     dataIndex: 'tissue',
     title: 'Ткань',
-    render: (value, record, index) => record?.tissue,
+    render: (value, record, index) => record?.sps?.sp?.product?.tissue,
   },
   {
     key: 'description',
