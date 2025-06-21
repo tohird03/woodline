@@ -1,15 +1,14 @@
 import {makeAutoObservable} from 'mobx';
-import {IGetStaffsParams, IStaffs, staffsApi} from '@/api/staffs';
 import {addNotification} from '@/utils';
 import { usersApi } from '@/api/users/users';
-import { IGetUsersParams } from '@/api/users/types';
+import { IGetUsersParams, IUser } from '@/api/users/types';
 
 class Staffs {
   pageNumber = 1;
   pageSize = 20;
   search: string | null = null;
   isOpenAddEditStaffModal = false;
-  singleStaff: IStaffs | null = null;
+  singleStaff: IUser | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -36,7 +35,7 @@ class Staffs {
     this.isOpenAddEditStaffModal = isOpenAddEditStaffModal;
   };
 
-  setSingleStaff = (singleStaff: IStaffs | null) => {
+  setSingleStaff = (singleStaff: IUser | null) => {
     this.singleStaff = singleStaff;
   };
 

@@ -19,7 +19,7 @@ export const AddEditModal = observer(() => {
 
   const { data: roleData, isLoading: loadingRole } = useQuery({
     queryKey: ['getRoles'],
-    queryFn: () => roleApi.getAllPartnerRoles(),
+    queryFn: () => roleApi.getAllRoles(),
   });
 
   const { mutate: addNewStaffs } =

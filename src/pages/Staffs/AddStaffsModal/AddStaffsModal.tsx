@@ -4,10 +4,11 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {Checkbox, Collapse, Form, Input, InputNumber, Modal} from 'antd';
 import {CheckboxChangeEvent} from 'antd/es/checkbox';
 import {roleApi} from '@/api/role';
-import {IAddStaff, IUpdateStaff, staffsApi} from '@/api/staffs';
 import {staffsStore} from '@/stores/staffs';
 import {addNotification} from '@/utils';
 import {regexPhoneNumber} from '@/utils/phoneFormat';
+import { usersApi } from '@/api/users/users';
+import { IAddUser, IUpdateUser } from '@/api/users/types';
 
 export const AddStaffsModal = observer(() => {
   const [form] = Form.useForm();
@@ -24,7 +25,7 @@ export const AddStaffsModal = observer(() => {
   const {mutate: addNewStaffs} =
     useMutation({
       mutationKey: ['addNewStaffs'],
-      mutationFn: (params: IAddStaff) => staffsApi.addNewStaff(params),
+      mutationFn: (params: IAddUser) => usersApi.addUsers(params),
       onSuccess: () => {
         queryClient.invalidateQueries({queryKey: ['getStaffs']});
         handleModalClose();
@@ -39,7 +40,7 @@ export const AddStaffsModal = observer(() => {
   const {mutate: updateStaffs} =
     useMutation({
       mutationKey: ['updateStaffs'],
-      mutationFn: (params: IUpdateStaff) => staffsApi.updateStaff(params),
+      mutationFn: (params: IUpdateUser) => usersApi.updateUsers(params),
       onSuccess: () => {
         queryClient.invalidateQueries({queryKey: ['getStaffs']});
         addNotification('Xodim muvaffaqiyatli o\'zgartirildi');
@@ -60,7 +61,7 @@ export const AddStaffsModal = observer(() => {
     form.submit();
   };
 
-  const handleSubmit = (values: IAddStaff) => {
+  const handleSubmit = (values: IAddUser) => {
     setLoading(true);
 
     if (staffsStore?.singleStaff) {
@@ -99,7 +100,7 @@ export const AddStaffsModal = observer(() => {
 
   useEffect(() => {
     if (staffsStore.singleStaff) {
-      staffsApi?.getSingleStaffs(staffsStore?.singleStaff?.id)
+      usersApi?.getSingleUser(staffsStore?.singleStaff?.id)
         .then(res => {
           form.setFieldsValue({
             ...res?.data,

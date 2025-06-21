@@ -3,12 +3,13 @@ import {observer} from 'mobx-react';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {Button, Popconfirm} from 'antd';
-import {IStaffs, staffsApi} from '@/api/staffs';
 import {staffsStore} from '@/stores/staffs';
 import {addNotification} from '@/utils';
+import { usersApi } from '@/api/users/users';
+import { IUser } from '@/api/users/types';
 
 type Props = {
-  staff: IStaffs;
+  staff: IUser;
 };
 
 export const Action: FC<Props> = observer(({staff}) => {
@@ -17,7 +18,7 @@ export const Action: FC<Props> = observer(({staff}) => {
   const {mutate: deleteStaff} =
   useMutation({
     mutationKey: ['deleteStaff'],
-    mutationFn: (id: string) => staffsApi.deleteStaff(id!),
+    mutationFn: (id: string) => usersApi.deleteUser(id!),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['getStaffs']});
       addNotification('Xodim muvaffaqiyatli o\'chirildi');

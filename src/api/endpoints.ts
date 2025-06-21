@@ -3,11 +3,12 @@ export const stage = process.env.REACT_APP_STAGE || 'dev';
 
 export enum Endpoints {
   Base = '',
-  StaffRoleMany = '/staff-role/many',
-  PartnerRoleMany = '/partner-role/many',
+  RoleMany = '/role/many',
+  RoleOne = '/role/one',
 
   // USERS
   UsersMany = '/user/many',
+  UserOne = '/user/one',
 
   // SETTINGS
   SignIn = '/auth/sign-in',

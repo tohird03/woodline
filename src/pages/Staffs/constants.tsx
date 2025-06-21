@@ -1,10 +1,10 @@
 import React from 'react';
 import {ColumnType} from 'antd/es/table';
-import {IStaffs} from '@/api/staffs';
 import {formatPhoneNumber} from '@/utils/phoneFormat';
 import {Action} from './Action';
+import { IUser } from '@/api/users/types';
 
-export const staffsColumns: ColumnType<IStaffs>[] = [
+export const staffsColumns: ColumnType<IUser>[] = [
   {
     key: 'index',
     dataIndex: 'index',

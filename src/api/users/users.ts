@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { Endpoints, umsStages } from '../endpoints';
 import { INetworkConfig, Instance } from '../instance';
 import { IResponse } from '../types';
-import { IGetUsersParams, IUser } from './types';
+import { IAddUser, IGetUsersParams, IUpdateUser, IUser } from './types';
 
 const config: INetworkConfig = {
   baseURL: Endpoints.Base,
@@ -22,17 +22,17 @@ class UsersApi extends Instance {
       },
     });
 
-  // getOnlyProviders = (params: IGetClientsInfoParams): Promise<IResponse<IClientsInfo[]>> =>
-  //   this.get(Endpoints.Provider, {params});
+  addUsers = (params: IAddUser): Promise<AxiosResponse> =>
+    this.post(Endpoints.UserOne, params);
 
-  // addClients = (params: IAddClientInfo): Promise<AxiosResponse> =>
-  //   this.post(Endpoints.ClientsOne, params);
+  updateUsers = (params: IUpdateUser): Promise<AxiosResponse> =>
+    this.patch(`${Endpoints.UserOne}`, params, { params: { id: params?.id } });
 
-  // updateClient = (params: IUpdateClient): Promise<AxiosResponse> =>
-  //   this.patch(`${Endpoints.ClientsOne}`, params, {params: {id: params?.id}});
+  deleteUser = (id: string): Promise<AxiosResponse> =>
+    this.delete(`${Endpoints.UserOne}`, { params: { id } });
 
-  // deleteClient = (id: string): Promise<AxiosResponse> =>
-  //   this.delete(`${Endpoints.ClientsOne}`, {params: {id}});
+  getSingleUser = (id: string): Promise<AxiosResponse<IUser>> =>
+    this.get(`${Endpoints.UserOne}`, { params: { id } });
 }
 
 export const usersApi = new UsersApi(config);
