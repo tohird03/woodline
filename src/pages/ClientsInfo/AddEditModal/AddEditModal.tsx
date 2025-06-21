@@ -9,6 +9,8 @@ import { addNotification } from '@/utils';
 import { regexPhoneNumber } from '@/utils/phoneFormat';
 import { clientsInfoStore } from '@/stores/clients-info';
 import { IAddClientInfo, IUpdateClient, clientsInfoApi } from '@/api/clients';
+import { IAddUser, IUpdateUser } from '@/api/users/types';
+import { usersApi } from '@/api/users/users';
 
 export const AddEditModal = observer(() => {
   const [form] = Form.useForm();
@@ -16,20 +18,22 @@ export const AddEditModal = observer(() => {
   const [loading, setLoading] = useState(false);
   const [userPer, setUserPer] = useState<string[]>([]);
   const [oldPer, setOldPer] = useState<string[]>([]);
+  const [userRole, setUserRole] = useState<string[]>([]);
+  const [oldRole, setOldRole] = useState<string[]>([]);
 
   const { data: roleData, isLoading: loadingRole } = useQuery({
     queryKey: ['getRoles'],
     queryFn: () => roleApi.getAllRoles(),
   });
 
-  const { mutate: addNewStaffs } =
+  const { mutate: addNewClient } =
     useMutation({
-      mutationKey: ['addNewStaffs'],
-      mutationFn: (params: IAddClientInfo) => clientsInfoApi.addClients(params),
+      mutationKey: ['addNewClient'],
+      mutationFn: (params: IAddUser) => usersApi.addUsers(params),
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['getStaffs'] });
+        queryClient.invalidateQueries({ queryKey: ['getClients'] });
         handleModalClose();
-        addNotification('Xodim muvaffaqiyatli qo\'shildi');
+        addNotification('Mijoz muvaffaqiyatli qo\'shildi');
       },
       onError: addNotification,
       onSettled: async () => {
@@ -37,13 +41,13 @@ export const AddEditModal = observer(() => {
       },
     });
 
-  const { mutate: updateStaffs } =
+  const { mutate: updateClient } =
     useMutation({
-      mutationKey: ['updateStaffs'],
-      mutationFn: (params: IUpdateClient) => clientsInfoApi.updateClient(params),
+      mutationKey: ['updateClient'],
+      mutationFn: (params: IUpdateUser) => usersApi.updateUsers(params),
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['getStaffs'] });
-        addNotification('Xodim muvaffaqiyatli o\'zgartirildi');
+        queryClient.invalidateQueries({ queryKey: ['getClients'] });
+        addNotification('Mijoz muvaffaqiyatli o\'zgartirildi');
         handleModalClose();
       },
       onError: addNotification,
@@ -61,55 +65,78 @@ export const AddEditModal = observer(() => {
     form.submit();
   };
 
-  const handleSubmit = (values: IAddClientInfo) => {
+  const handleSubmit = (values: IAddUser) => {
     setLoading(true);
 
     if (clientsInfoStore?.singleClientInfo) {
       const connectPer = userPer?.filter(newPer => !oldPer?.includes(newPer));
       const disconnectPer = oldPer?.filter(newPer => !userPer?.includes(newPer));
 
-      updateStaffs({
+      const connectRole = userRole?.filter(newRole => !oldRole?.includes(newRole));
+      const disconnectRole = oldRole?.filter(newRole => !userRole?.includes(newRole));
+
+      updateClient({
         fullname: values?.fullname,
         password: values?.password,
         phone: `998${values?.phone}`,
         id: clientsInfoStore?.singleClientInfo?.id!,
         actionsToConnect: connectPer,
         actionsToDisconnect: disconnectPer,
+        rolesToConnect: connectRole,
+        rolesToDisconnect: disconnectRole,
       });
 
       return;
     }
-    addNewStaffs({
+
+    addNewClient({
       ...values,
       actionsToConnect: userPer,
+      rolesToConnect: userRole,
       phone: `998${values?.phone}`,
     });
   };
 
-  const handleChangePer = (e: CheckboxChangeEvent, perId: string) => {
-    const findOldAssignPer = userPer?.find((per) => per === perId);
+  // const handleChangePer = (e: CheckboxChangeEvent, perId: string) => {
+  //   const findOldAssignPer = userPer?.find((per) => per === perId);
 
-    if (e?.target?.checked && !findOldAssignPer) {
-      setUserPer([...userPer, perId]);
-    } else if (findOldAssignPer) {
-      const filterPer = userPer?.filter((per) => per !== perId);
+  //   if (e?.target?.checked && !findOldAssignPer) {
+  //     setUserPer([...userPer, perId]);
+  //   } else if (findOldAssignPer) {
+  //     const filterPer = userPer?.filter((per) => per !== perId);
 
-      setUserPer(filterPer);
+  //     setUserPer(filterPer);
+  //   }
+  // };
+
+  const handleChangeRole = (e: CheckboxChangeEvent, roleName: string) => {
+    const findOldAssignRole = userRole?.find((per) => per === roleName);
+
+    if (e?.target?.checked && !findOldAssignRole) {
+      setUserRole([...userRole, roleName]);
+    } else if (findOldAssignRole) {
+      const filterPer = userRole?.filter((per) => per !== roleName);
+
+      setUserRole(filterPer);
     }
   };
 
   useEffect(() => {
     if (clientsInfoStore.singleClientInfo) {
-      clientsInfoApi?.getSingleClient(clientsInfoStore?.singleClientInfo?.id)
+      usersApi?.getSingleUser(clientsInfoStore.singleClientInfo?.id)
         .then(res => {
           form.setFieldsValue({
             ...res?.data,
             phone: res?.data?.phone?.slice(3),
           });
           const checkPer = res?.data?.actionIds;
+          const checkRole = res?.data?.roles?.map(role => role?.name);
 
           setUserPer(checkPer);
           setOldPer(checkPer);
+
+          setUserRole(checkRole);
+          setOldRole(checkRole);
         });
     }
   }, [clientsInfoStore.singleClientInfo]);
@@ -198,11 +225,19 @@ export const AddEditModal = observer(() => {
         }
       </Form>
       {roleData?.data?.data?.map(role => (
-        <div key={role?.id}>
-          <Collapse
+        <div key={role?.name}>
+          <Checkbox
+            onChange={(e) => handleChangeRole(e, role?.name)}
+            key={role?.name}
+            style={{ display: 'flex', paddingLeft: '20px' }}
+            checked={userRole?.includes(role?.name)}
+          >
+            {role?.name}
+          </Checkbox>
+          {/* <Collapse
             size="small"
             items={[{
-              key: role?.id,
+              key: role?.name,
               label: role?.name,
               children:
                 role?.actions?.map((per) => (
@@ -216,7 +251,7 @@ export const AddEditModal = observer(() => {
                   </Checkbox>
                 )),
             }]}
-          />
+          /> */}
         </div>
       ))
       }

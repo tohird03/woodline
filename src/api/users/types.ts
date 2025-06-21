@@ -1,4 +1,4 @@
-import { ERoleName } from "../role";
+import { ERoleName, IRole } from "../role";
 import { IPagination } from "../types";
 
 export interface IUser {
@@ -6,7 +6,9 @@ export interface IUser {
   fullname: string;
   phone: string;
   actionIds: string[];
-
+  roles: IRole[];
+  source: string;
+  balance: number;
 }
 
 export interface IGetUsersParams extends IPagination {
@@ -21,6 +23,8 @@ export interface IUpdateUser {
   password: string;
   actionsToConnect: string[];
   actionsToDisconnect: string[];
+  rolesToConnect: string[];
+  rolesToDisconnect: string[];
 }
 
 export interface IAddUser {
@@ -29,4 +33,5 @@ export interface IAddUser {
   phone: string;
   password: string;
   actionsToConnect: string[];
+  rolesToConnect: string[];
 }

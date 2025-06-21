@@ -2,13 +2,14 @@ import React, {FC} from 'react';
 import {observer} from 'mobx-react';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {Button, Popconfirm, notification} from 'antd';
-import {clientsInfoApi, IClientsInfo} from '@/api/clients';
+import {Button, Popconfirm} from 'antd';
+import {clientsInfoApi} from '@/api/clients';
 import {addNotification} from '@/utils';
 import { clientsInfoStore } from '@/stores/clients-info';
+import { IUser } from '@/api/users/types';
 
 type Props = {
-  client: IClientsInfo;
+  client: IUser;
 };
 
 export const Action: FC<Props> = observer(({client}) => {

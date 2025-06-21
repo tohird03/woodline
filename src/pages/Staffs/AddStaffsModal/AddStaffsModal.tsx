@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {observer} from 'mobx-react';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {Checkbox, Collapse, Form, Input, InputNumber, Modal} from 'antd';
-import {CheckboxChangeEvent} from 'antd/es/checkbox';
-import {roleApi} from '@/api/role';
-import {staffsStore} from '@/stores/staffs';
-import {addNotification} from '@/utils';
-import {regexPhoneNumber} from '@/utils/phoneFormat';
+import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Checkbox, Collapse, Form, Input, InputNumber, Modal } from 'antd';
+import { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { roleApi } from '@/api/role';
+import { staffsStore } from '@/stores/staffs';
+import { addNotification } from '@/utils';
+import { regexPhoneNumber } from '@/utils/phoneFormat';
 import { usersApi } from '@/api/users/users';
 import { IAddUser, IUpdateUser } from '@/api/users/types';
 
@@ -15,19 +15,21 @@ export const AddStaffsModal = observer(() => {
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [userPer, setUserPer] = useState<string[]>([]);
+  const [userRole, setUserRole] = useState<string[]>([]);
   const [oldPer, setOldPer] = useState<string[]>([]);
+  const [oldRole, setOldRole] = useState<string[]>([]);
 
-  const {data: roleData, isLoading: loadingRole} = useQuery({
+  const { data: roleData, isLoading: loadingRole } = useQuery({
     queryKey: ['getRoles'],
     queryFn: () => roleApi.getAllRoles(),
   });
 
-  const {mutate: addNewStaffs} =
+  const { mutate: addNewStaffs } =
     useMutation({
       mutationKey: ['addNewStaffs'],
       mutationFn: (params: IAddUser) => usersApi.addUsers(params),
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ['getStaffs']});
+        queryClient.invalidateQueries({ queryKey: ['getStaffs'] });
         handleModalClose();
         addNotification('Xodim muvaffaqiyatli qo\'shildi');
       },
@@ -37,12 +39,12 @@ export const AddStaffsModal = observer(() => {
       },
     });
 
-  const {mutate: updateStaffs} =
+  const { mutate: updateStaffs } =
     useMutation({
       mutationKey: ['updateStaffs'],
       mutationFn: (params: IUpdateUser) => usersApi.updateUsers(params),
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ['getStaffs']});
+        queryClient.invalidateQueries({ queryKey: ['getStaffs'] });
         addNotification('Xodim muvaffaqiyatli o\'zgartirildi');
         handleModalClose();
       },
@@ -68,6 +70,9 @@ export const AddStaffsModal = observer(() => {
       const connectPer = userPer?.filter(newPer => !oldPer?.includes(newPer));
       const disconnectPer = oldPer?.filter(newPer => !userPer?.includes(newPer));
 
+      const connectRole = userRole?.filter(newRole => !oldRole?.includes(newRole));
+      const disconnectRole = oldRole?.filter(newRole => !userRole?.includes(newRole));
+
       updateStaffs({
         fullname: values?.fullname,
         password: values?.password,
@@ -75,6 +80,8 @@ export const AddStaffsModal = observer(() => {
         id: staffsStore?.singleStaff?.id!,
         actionsToConnect: connectPer,
         actionsToDisconnect: disconnectPer,
+        rolesToConnect: connectRole,
+        rolesToDisconnect: disconnectRole,
       });
 
       return;
@@ -82,19 +89,33 @@ export const AddStaffsModal = observer(() => {
     addNewStaffs({
       ...values,
       actionsToConnect: userPer,
+      rolesToConnect: userRole,
       phone: `998${values?.phone}`,
     });
   };
 
-  const handleChangePer = (e: CheckboxChangeEvent, perId: string) => {
-    const findOldAssignPer = userPer?.find((per) => per === perId);
+  // PER
+  // const handleChangePer = (e: CheckboxChangeEvent, perId: string) => {
+  //   const findOldAssignPer = userPer?.find((per) => per === perId);
 
-    if (e?.target?.checked && !findOldAssignPer) {
-      setUserPer([...userPer, perId]);
-    } else if (findOldAssignPer) {
-      const filterPer = userPer?.filter((per) => per !== perId);
+  //   if (e?.target?.checked && !findOldAssignPer) {
+  //     setUserPer([...userPer, perId]);
+  //   } else if (findOldAssignPer) {
+  //     const filterPer = userPer?.filter((per) => per !== perId);
 
-      setUserPer(filterPer);
+  //     setUserPer(filterPer);
+  //   }
+  // };
+
+  const handleChangeRole = (e: CheckboxChangeEvent, roleName: string) => {
+    const findOldAssignRole = userRole?.find((per) => per === roleName);
+
+    if (e?.target?.checked && !findOldAssignRole) {
+      setUserRole([...userRole, roleName]);
+    } else if (findOldAssignRole) {
+      const filterPer = userRole?.filter((per) => per !== roleName);
+
+      setUserRole(filterPer);
     }
   };
 
@@ -107,9 +128,13 @@ export const AddStaffsModal = observer(() => {
             phone: res?.data?.phone?.slice(3),
           });
           const checkPer = res?.data?.actionIds;
+          const checkRole = res?.data?.roles?.map(role => role?.name);
 
           setUserPer(checkPer);
           setOldPer(checkPer);
+
+          setUserRole(checkRole);
+          setOldRole(checkRole);
         });
     }
   }, [staffsStore.singleStaff]);
@@ -135,7 +160,7 @@ export const AddStaffsModal = observer(() => {
         <Form.Item
           name="fullname"
           label="Имя"
-          rules={[{required: true}]}
+          rules={[{ required: true }]}
         >
           <Input placeholder="F.I.O" />
         </Form.Item>
@@ -143,7 +168,7 @@ export const AddStaffsModal = observer(() => {
           name="phone"
           label="Номер телефона: 901234567"
           rules={[
-            {required: true},
+            { required: true },
             {
               pattern: regexPhoneNumber,
               message: 'Raqamni to\'g\'ri kiriting!, Masalan: 901234567',
@@ -153,7 +178,7 @@ export const AddStaffsModal = observer(() => {
           <InputNumber
             addonBefore="+998"
             placeholder="Номер телефона"
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             type="number"
           />
         </Form.Item>
@@ -185,8 +210,16 @@ export const AddStaffsModal = observer(() => {
         </Form.Item>
       </Form>
       {roleData?.data?.data?.map(role => (
-        <div key={role?.id}>
-          <Collapse
+        <div key={role?.name}>
+          <Checkbox
+            onChange={(e) => handleChangeRole(e, role?.name)}
+            key={role?.name}
+            style={{ display: 'flex', paddingLeft: '20px' }}
+            checked={userRole?.includes(role?.name)}
+          >
+            {role?.name}
+          </Checkbox>
+          {/* <Collapse
             size="small"
             items={[{
               key: role?.id,
@@ -203,7 +236,7 @@ export const AddStaffsModal = observer(() => {
                   </Checkbox>
                 )),
             }]}
-          />
+          /> */}
         </div>
       ))
       }

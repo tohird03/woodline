@@ -2,7 +2,7 @@ import {makeAutoObservable} from 'mobx';
 import {clientsInfoApi, IClientsInfo, IGetClientsInfoParams} from '@/api/clients';
 import {addNotification} from '@/utils';
 import { usersApi } from '@/api/users/users';
-import { IGetUsersParams } from '@/api/users/types';
+import { IGetUsersParams, IUser } from '@/api/users/types';
 
 class ClientsInfoStore {
   pageNumber = 1;
@@ -10,7 +10,7 @@ class ClientsInfoStore {
   search: string | null = null;
   debt: number | null = null;
   isOpenAddEditClientModal = false;
-  singleClientInfo: IClientsInfo | null = null;
+  singleClientInfo: IUser | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -41,7 +41,7 @@ class ClientsInfoStore {
     this.isOpenAddEditClientModal = isOpenAddEditClientModal;
   };
 
-  setSingleClientInfo = (singleClientInfo: IClientsInfo | null) => {
+  setSingleClientInfo = (singleClientInfo: IUser | null) => {
     this.singleClientInfo = singleClientInfo;
   };
 

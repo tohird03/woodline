@@ -17,7 +17,6 @@ const cn = classNames.bind(styles);
 
 export const ClientsInfo = observer(() => {
   const isMobile = useMediaQuery('(max-width: 800px)');
-  const [downloadLoading, setDownLoadLoading] = useState(false);
 
   const { data: clientsInfoData, isLoading: loading } = useQuery({
     queryKey: [

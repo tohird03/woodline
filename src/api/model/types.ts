@@ -1,11 +1,11 @@
-import { IClientsInfo } from '../clients';
 import { IFurnutureType } from '../furnuture-type/types';
 import {IPagination} from '../types';
+import { IUser } from '../users/types';
 
 export interface IModel {
   id: string;
   name: string;
-  provider: IClientsInfo;
+  provider: IUser;
   furnitureType: IFurnutureType;
 }
 

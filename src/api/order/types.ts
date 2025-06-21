@@ -2,6 +2,7 @@ import { IClientsInfo } from '../clients';
 import { IModel } from '../model/types';
 import { IProduct } from '../products/types';
 import { IPagination } from '../types';
+import { IUser } from '../users/types';
 
 export interface IGenerateId {
   data: {
@@ -85,7 +86,7 @@ export interface IOrder {
   id: string;
   payments: ICartOrderPayment[];
   products: ICartProducts[];
-  client: IClientsInfo;
+  client: IUser;
   status: IOrderStatus;
   deliveryDate: string;
 }

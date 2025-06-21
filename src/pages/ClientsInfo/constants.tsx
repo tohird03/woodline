@@ -5,8 +5,9 @@ import { Action } from './Action';
 import { formatPhoneNumber } from '@/utils/phoneFormat';
 import { ClientNameLink } from '@/pages/ActionComponents/ClientNameLink';
 import { priceFormat } from '@/utils/priceFormat';
+import { IUser } from '@/api/users/types';
 
-export const clientsColumns: ColumnType<IClientsInfo>[] = [
+export const clientsColumns: ColumnType<IUser>[] = [
   {
     key: 'index',
     dataIndex: 'index',
