@@ -11,10 +11,9 @@ import { incomeColumns } from './constants';
 import { incomeStores } from '@/stores/storehouse';
 import { AddEditModal } from './AddEditModal';
 import { ShowIncomeProductModal } from './ShowProductsModal';
-import styles from './income.scss';
+import styles from './styles.scss';
 
 const cn = classNames.bind(styles);
-
 
 export const Income = observer(() => {
   const isMobile = useMediaQuery('(max-width: 800px)');
