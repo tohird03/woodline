@@ -9,7 +9,6 @@ import { ICartOrderClient } from '@/api/order/types';
 import dayjs from 'dayjs';
 import { userInfosourceOptions } from '../ProductsModal/constants';
 import { usersApi } from '@/api/users/users';
-import { ERoleName } from '@/api/role';
 
 export const CorzinkaClientsModal = observer(() => {
   const [form] = Form.useForm();
@@ -19,7 +18,6 @@ export const CorzinkaClientsModal = observer(() => {
     queryFn: () =>
       usersApi.getUsers({
         pagination: false,
-        roleNames: [ERoleName.CLIENT],
       }),
   });
 

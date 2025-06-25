@@ -1,16 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { observer } from 'mobx-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Form, Input, InputNumber, Modal, Select, Tag, notification } from 'antd';
+import { Form, InputNumber, Modal, Select, Tag, notification } from 'antd';
 import { addNotification } from '@/utils';
 import { trimValues } from '@/utils/trimObjectFunc';
-import { storehouseApi } from '@/api/storehouse';
-import { IAddEditStorehouse, IStorehouseType } from '@/api/storehouse/type';
-import { showroomStores } from '@/stores/showroom';
+import { IStorehouseType } from '@/api/storehouse/type';
 import { incomeStores } from '@/stores/storehouse';
 import { warehouseStores } from '@/stores/warehouse';
 import { usersApi } from '@/api/users/users';
-import { ERoleName } from '@/api/role';
 import { productsApi } from '@/api/products/products';
 import { ColumnType } from 'antd/es/table';
 import { IProduct } from '@/api/products/types';
@@ -43,7 +40,6 @@ export const AddEditModal = observer(() => {
     queryFn: () =>
       usersApi.getUsers({
         pagination: false,
-        roleNames: [ERoleName.PROVIDER],
       }),
   });
 
